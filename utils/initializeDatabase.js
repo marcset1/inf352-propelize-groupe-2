@@ -1,5 +1,5 @@
 // utils/initializeDatabase.js
-import logger from '../logger.js';
+import logger from '../middleware/logger.js';
 import { connectDB } from '../config/db.js';
 import { seedVehicles } from '../data/seedData.js';
 

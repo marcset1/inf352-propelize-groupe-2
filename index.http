@@ -2,10 +2,10 @@
 @contentType = application/json
 
 ### 1. Get all vehicles
-GET {{baseUrl}}/vehicule
+GET {{baseUrl}}/vehicles
 
 ### 2. Create a new vehicle
-POST {{baseUrl}}/vehicule
+POST {{baseUrl}}/vehicles
 Content-Type: {{contentType}}
 
 {
@@ -19,10 +19,10 @@ Content-Type: {{contentType}}
 
 
 ### 5. Get specific vehicle by ID
-GET {{baseUrl}}/vehicule/d8e65c39-04d1-45e9-8761-cf328ddfe7be
+GET {{baseUrl}}/vehicles/d8e65c39-04d1-45e9-8761-cf328ddfe7be
 
 ### 6. Update the vehicle
-PUT {{baseUrl}}/vehicule/d8e65c39-04d1-45e9-8761-cf328ddfe7be
+PUT {{baseUrl}}/vehicles/d8e65c39-04d1-45e9-8761-cf328ddfe7be
 Content-Type: {{contentType}}
 
 {
@@ -31,10 +31,10 @@ Content-Type: {{contentType}}
 }
 
 ### 7. Search vehicle by immatriculation
-GET {{baseUrl}}/vehicule/search/ABC-5005
+GET {{baseUrl}}/vehicles/search/ABC-5005
 
 ### 8. Filter vehicles by max price
-GET {{baseUrl}}/vehicule/price/36000000
+GET {{baseUrl}}/vehicles/price/36000000
 
 ### 9. Delete the vehicle
-DELETE {{baseUrl}}/vehicule/d8e65c39-04d1-45e9-8761-cf328ddfe7be
+DELETE {{baseUrl}}/vehicles/d8e65c39-04d1-45e9-8761-cf328ddfe7be

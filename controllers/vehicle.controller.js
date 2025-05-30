@@ -1,6 +1,6 @@
 import Vehicle from '../models/vehicle.model.js';
 import { Op } from 'sequelize';
-import logger from '../logger.js';
+import logger from '../middleware/logger.js';
 
 export const createVehicle = async (req, res) => {
   try {

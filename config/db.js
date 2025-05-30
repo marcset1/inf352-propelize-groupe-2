@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import logger from '../logger.js';
+import logger from '../middleware/logger.js';
 
 const sequelize = new Sequelize(
   process.env.DB_NAME || 'vehicle_db',

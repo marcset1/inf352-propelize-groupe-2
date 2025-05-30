@@ -1,22 +1,34 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import pinoHttp from 'pino-http';
-import logger from './logger.js';
-import vehicleRoutes from './routes/vehicle.routes.js';
-import { connectDB } from './config/db.js';
-import { seedVehicles } from './data/seedData.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
+// Import utilities
+import logger from './middleware/logger.js';
+
+// Import database and seeders
+import { connectDB } from './config/db.js';
+import { seedAll } from './data/seedData.js'; // Modification ici pour utiliser seedAll
+
+// Import routes
+import vehicleRoutes from './routes/vehicle.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+
+
+dotenv.config();
 
 const app = express();
 
-// Connect to Database
+// Initialize database and seed data
 const initializeApp = async () => {
   try {
     // Connect to database first
     await connectDB();
     
-    // Then seed the database with initial data
-    await seedVehicles();
+    // Then seed the database with initial data (users and vehicles)
+    await seedAll(); // Modification ici pour seed users et vehicles
     
     logger.info('Database initialized and seeded successfully');
   } catch (error) {
@@ -25,20 +37,35 @@ const initializeApp = async () => {
   }
 };
 
-initializeApp();
-
-
-
 // Middlewares
 app.use(pinoHttp({ logger }));
 app.use(bodyParser.json());
+app.use(cors());
 
 // Routes
-app.use('/vehicule', vehicleRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/vehicles', vehicleRoutes); 
 
-// Basic route
+// Health check route
 app.get('/', (req, res) => {
-  res.send("Vehicle API Service");
+  res.json({ 
+    status: 'running',
+    message: "Vehicle Rental API Service",
+    timestamp: new Date().toISOString()
+  });
 });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.error(err.stack);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: err.message 
+  });
+});
+
+// Initialize the application
+initializeApp();
 
 export { app };
