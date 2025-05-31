@@ -1,0 +1,79 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import pinoHttp from 'pino-http';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+// Import utilities
+import logger from './middleware/logger.js';
+
+// Import database and seeders
+import { connectDB } from './config/db.js';
+import { seedAll } from './data/seedData.js'; // Modification ici pour utiliser seedAll
+
+// Import routes
+import vehicleRoutes from './routes/vehicle.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+
+
+
+dotenv.config();
+
+const app = express();
+
+// Initialize database and seed data
+const initializeApp = async () => {
+  try {
+    // Connect to database first
+    await connectDB();
+
+    // Then seed the database with initial data (users and vehicles)
+    if (process.env.NODE_ENV !== 'test') {
+  await seedAll();
+}
+    
+    logger.info('Database initialized and seeded successfully');
+  } catch (error) {
+    console.error('❌ Failed to initialize database:', error);
+  logger.error(`❌ Message: ${error.message}`);
+  logger.error(`❌ Stack:\n${error.stack}`);
+  process.exit(1);
+    
+  }
+};
+
+// Middlewares
+app.use(pinoHttp({ logger }));
+app.use(bodyParser.json());
+app.use(cors());
+
+// Routes
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/vehicles', vehicleRoutes); 
+
+// Health check route
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'running',
+    message: "Vehicle Rental API Service",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.error(err.stack);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: err.message 
+  });
+});
+const PORT = process.env.PORT || 5000;
+
+
+// Initialize the application
+initializeApp();
+
+export { app };
