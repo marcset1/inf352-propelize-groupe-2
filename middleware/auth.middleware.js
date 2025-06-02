@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import logger from './logger.js';
 
+// Middleware d'authentification (vérifie le token)
 export const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
@@ -26,6 +27,7 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
+// Middleware d'autorisation basé sur un tableau de rôles
 export const authorize = (roles = []) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
@@ -34,3 +36,12 @@ export const authorize = (roles = []) => {
     next();
   };
 };
+
+// Middleware dédié uniquement aux administrateurs
+export const requireAdmin = (req, res, next) => {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ error: 'Accès réservé aux administrateurs' });
+  }
+  next();
+};
+
