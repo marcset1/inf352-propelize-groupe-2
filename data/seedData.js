@@ -110,3 +110,4 @@ export const seedAll = async () => {
     throw error;
   }
 };
+export { generateVehicleData, generateUserData };
