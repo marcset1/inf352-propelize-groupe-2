@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choix API - Propelize</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #4cc9f0;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #2b2d42;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Effet de fond animé */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+      z-index: -1;
+      animation: backgroundMove 20s linear infinite;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 50px 40px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .user-info {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .user-info i {
+      font-size: 1.2rem;
+    }
+    
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      color: white;
+    }
+    
+    .logo i {
+      color: var(--secondary);
+      animation: pulse 2s infinite;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .api-btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+      padding: 25px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: left;
+      backdrop-filter: blur(5px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .api-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1),
+        transparent);
+      z-index: 0;
+      transform: translateX(-100%);
+    }
+    
+    .api-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .api-btn:hover::after {
+      animation: shimmer 1.5s infinite;
+    }
+    
+    .api-btn i {
+      font-size: 2.5rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .user-btn i {
+      background: linear-gradient(to right, #7209b7, #4361ee);
+    }
+    
+    .vehicle-btn i {
+      background: linear-gradient(to right, #4cc9f0, #06d6a0);
+    }
+    
+    .btn-text {
+      flex-grow: 1;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .btn-text h2 {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+    
+    .btn-text p {
+      font-size: 1rem;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+    
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4ade80;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+    }
+    
+    .notification.error {
+      background: #ef4444;
+    }
+    
+    @keyframes scaleIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+    
+    @keyframes backgroundMove {
+      0% { transform: rotate(30deg) translate(0, 0); }
+      100% { transform: rotate(30deg) translate(-50%, 0); }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes fadeOutContainer {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.9); }
+    }
+    
+    @media (max-width: 500px) {
+      .container {
+        padding: 40px 20px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+      }
+      
+      .api-btn {
+        padding: 20px;
+      }
+      
+      .api-btn i {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+      }
+      
+      .btn-text h2 {
+        font-size: 1.4rem;
+      }
+      
+      .btn-text p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <div class="user-info" id="userInfo">
+      <i class="fas fa-user"></i>
+      <span id="username">Chargement...</span>
+    </div>
+    
+    <div class="logo">
+      <i class="fas fa-car"></i>
+      <span>Propelize</span>
+    </div>
+    
+    <h1>Choisissez une API</h1>
+    
+    <div class="btn-container">
+      <div class="api-btn user-btn" onclick="navigateTo('profil.html')">
+        <i class="fas fa-user-circle"></i>
+        <div class="btn-text">
+          <h2>API Utilisateur</h2>
+          <p>Gérer votre profil utilisateur</p>
+        </div>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      
+      <div class="api-btn vehicle-btn" onclick="navigateTo('vehicule.html')">
+        <i class="fas fa-car-side"></i>
+        <div class="btn-text">
+          <h2>API Véhicule</h2>
+          <p>Rechercher et louer des véhicules</p>
+        </div>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div>
+    
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Déconnexion
+    </button>
+  </div>
+  
+  <script>
+    // Fonction pour afficher une notification
+    function showNotification(message, isError = false) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${isError ? 'error' : ''}`;
+      notification.innerHTML = `
+        <i class="fas fa-${isError ? 'exclamation-circle' : 'check-circle'}"></i>
+        <span>${message}</span>
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    
+    // Navigation avec animation
+    function navigateTo(page) {
+      // Animation de sortie
+      const container = document.getElementById('mainContainer');
+      container.style.animation = 'fadeOutContainer 0.5s forwards';
+      
+      setTimeout(() => {
+        window.location.href = page;
+      }, 500);
+    }
+    
+    // Déconnexion
+    function logout() {
+      // Animation de déconnexion
+      const container = document.getElementById('mainContainer');
+      container.style.animation = 'fadeOutContainer 0.8s forwards';
+      
+      setTimeout(() => {
+        // Supprimer le token du localStorage
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        
+        showNotification('Déconnexion réussie. À bientôt!');
+        
+        // Rediriger vers la page de connexion
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+      }, 800);
+    }
+    
+    // Vérification de l'authentification au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ajouter l'animation fadeOutContainer
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes fadeOutContainer {
+          from { opacity: 1; transform: scale(1); }
+          to { opacity: 0; transform: scale(0.9); }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Vérifier si l'utilisateur est connecté
+      const token = localStorage.getItem('accessToken');
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      if (!token || !user) {
+        showNotification('Veuillez vous connecter pour accéder à cette page', true);
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+        return;
+      }
+      
+      // Afficher le nom d'utilisateur
+      const usernameElement = document.getElementById('username');
+      if (user && user.username) {
+        usernameElement.textContent = user.username;
+      } else {
+        usernameElement.textContent = 'Utilisateur';
+      }
+      
+      showNotification(`Bienvenue, ${user.username || 'utilisateur'} !`);
+    });
+  </script>
+</body>
+</html>

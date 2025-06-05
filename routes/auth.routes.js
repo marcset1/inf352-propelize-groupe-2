@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
+import { authenticate } from '../middleware/auth.middleware.js';
 import {
   register,
   login,
@@ -8,9 +10,21 @@ import {
 
 const router = Router();
 
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register',
+  body('email').isEmail(),
+  body('password').isLength({ min: 6 }),
+  register
+);
+
+router.post('/login',
+  body('email').isEmail(),
+  body('password').exists(),
+  login
+);
+
 router.post('/refresh', refreshToken);
-router.post('/logout', logout);
+
+router.post('/logout', authenticate, logout);
 
 export default router;
+

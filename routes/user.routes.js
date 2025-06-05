@@ -10,12 +10,17 @@ import {
 
 const router = Router();
 
-// Protéger toutes les routes
-router.use(authenticate);
+// Routes réservées aux admins
 router.post('/', authorize(['admin']), createUser);
 router.get('/', authorize(['admin']), getUsers);
-router.get('/:id', getUser);
-router.put('/:id', updateUser);
 router.delete('/:id', authorize(['admin']), deleteUser);
 
+// Routes accessibles aux utilisateurs authentifiés
+router.get('/:id', getUser);
+router.put('/update/:id', updateUser); // plus besoin de 'authenticate' ici
+
 export default router;
+
+
+
+

@@ -59,6 +59,67 @@ app.use((err, req, res, next) => {
   });
 });
 
+// server.js - Ajoutez ce middleware CORS
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:8000', // Autorisez spécifiquement votre frontend
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Middleware d'authentification amélioré
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ 
+      success: false, 
+      message: 'Token d\'authentification manquant' 
+    });
+  }
+  
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) {
+      console.error('Erreur de vérification du token:', err);
+      return res.status(403).json({ 
+        success: false, 
+        message: 'Token invalide ou expiré' 
+      });
+    }
+    
+    req.user = user;
+    next();
+  });
+};
+
+// Exemple de route protégée
+app.get('/api/users', authenticateToken, (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ 
+      success: false, 
+      message: 'Accès non autorisé' 
+    });
+  }
+  
+  // Récupération des utilisateurs depuis la base de données
+  db.all('SELECT id, fullname, username, role FROM users', (err, rows) => {
+    if (err) {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Erreur de base de données' 
+      });
+    }
+    
+    res.json({ 
+      success: true, 
+      users: rows 
+    });
+  });
+});
+
+
 // 7) Initialiser la base de données et semer les données
 const initializeApp = async () => {
   try {

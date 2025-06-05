@@ -1,37 +1,1001 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin - Propelize</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #4cc9f0;
+      --dark: #2b2d42;
+      --light: #f8f9fa;
+      --success: #06d6a0;
+      --danger: #ef476f;
+      --warning: #ffd166;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: url('car-background.jpg') no-repeat center center fixed;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
       background-size: cover;
       color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
       text-align: center;
-      padding: 50px;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 30px;
     }
-    button {
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #4361ee;
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
       color: white;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      color: var(--secondary);
+      margin-right: 10px;
+      font-size: 2rem;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+    
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+    
+    .dashboard-content {
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .welcome-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      gap: 15px;
+    }
+    
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+    }
+    
+    .tab-btn:hover, .tab-btn.active {
+      background: rgba(67, 97, 238, 0.5);
+      transform: translateY(-3px);
+    }
+    
+    .tab-content {
+      display: none;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .add-btn {
+      background: linear-gradient(to right, var(--success), var(--secondary));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .add-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .table-container {
+      overflow-x: auto;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    
+    th, td {
+      padding: 15px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    th {
+      background: rgba(67, 97, 238, 0.3);
+      font-weight: 500;
+    }
+    
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .action-btns {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .edit-btn, .delete-btn {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .edit-btn {
+      background: var(--warning);
+      color: var(--dark);
+    }
+    
+    .delete-btn {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .delete-btn.disabled {
+      background: rgba(239, 71, 111, 0.3);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    .edit-btn:hover, .delete-btn:hover:not(.disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+      background: linear-gradient(145deg, #1a1c2f, #25283e);
+      width: 90%;
+      max-width: 600px;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.2s;
+    }
+    
+    .close-modal:hover {
+      color: white;
+      transform: rotate(90deg);
+    }
+    
+    .modal-title {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      text-align: center;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 1rem;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .cancel-btn, .save-btn {
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+    
+    .cancel-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .save-btn {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+    }
+    
+    .cancel-btn:hover, .save-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    
+    .status-active {
+      background: rgba(6, 214, 160, 0.2);
+      color: var(--success);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+    
+    .status-inactive {
+      background: rgba(239, 71, 111, 0.2);
+      color: var(--danger);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .notification.success {
+      background: rgba(6, 214, 160, 0.9);
+    }
+    
+    .notification.error {
+      background: rgba(239, 71, 111, 0.9);
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      font-size: 1.2rem;
+      color: var(--secondary);
+    }
+    
+    .loading i {
+      font-size: 2rem;
+      margin-right: 10px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .tabs-container {
+        flex-direction: column;
+      }
+      
+      .table-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .action-btns {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .edit-btn, .delete-btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to Propelize, Admin</h1>
-  <button onclick="window.location.href='vehicule.html'">Gérer les véhicules</button>
-  <button onclick="window.location.href='users.html'">Gérer les utilisateurs</button>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>Propelize</span>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">A</div>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+      </div>
+    </header>
+    
+    <div class="dashboard-content">
+      <h1>Tableau de bord Administrateur</h1>
+      <p class="welcome-text">Gérez l'ensemble de la plateforme Propelize, des utilisateurs aux véhicules, avec des outils puissants conçus pour les administrateurs.</p>
+      
+      <div class="tabs-container">
+        <button class="tab-btn active" data-tab="users">Gestion des Utilisateurs</button>
+        <button class="tab-btn" data-tab="vehicles">Gestion des Véhicules</button>
+      </div>
+      
+      <!-- Onglet Utilisateurs -->
+      <div id="users-tab" class="tab-content active">
+        <div class="table-header">
+          <h2><i class="fas fa-users"></i> Liste des Utilisateurs</h2>
+          <button class="add-btn" onclick="openUserModal()">
+            <i class="fas fa-plus"></i> Nouvel Utilisateur
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Statut</th>
+                <th>Date d'inscription</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr>
+                <td colspan="7" class="loading">
+                  <i class="fas fa-spinner"></i> Chargement des utilisateurs...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Onglet Véhicules -->
+      <div id="vehicles-tab" class="tab-content">
+        <div class="table-header">
+          <h2><i class="fas fa-car-side"></i> Liste des Véhicules</h2>
+          <button class="add-btn" onclick="openVehicleModal()">
+            <i class="fas fa-plus"></i> Nouveau Véhicule
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Modèle</th>
+                <th>Marque</th>
+                <th>Type</th>
+                <th>Prix/Jour</th>
+                <th>Disponibilité</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vehicles-table-body">
+              <tr>
+                <td colspan="7" class="loading">
+                  <i class="fas fa-spinner"></i> Chargement des véhicules...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2025 Propelize - Plateforme de gestion de véhicules premium</p>
+    </footer>
+  </div>
+  
+  <!-- Modals -->
+  <div id="user-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('user-modal')">&times;</span>
+      <h2 class="modal-title" id="user-modal-title">Gestion Utilisateur</h2>
+      <form id="user-form">
+        <input type="hidden" id="user-id">
+        <div class="form-group">
+          <label for="user-name">Nom complet</label>
+          <input type="text" id="user-name" required>
+        </div>
+        <div class="form-group">
+          <label for="user-email">Email</label>
+          <input type="email" id="user-email" required>
+        </div>
+        <div class="form-group">
+          <label for="user-role">Rôle</label>
+          <select id="user-role" required>
+            <option value="">Sélectionnez un rôle</option>
+            <option value="admin">Administrateur</option>
+            <option value="premium">Client Premium</option>
+            <option value="standard">Client Standard</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="user-status">Statut</label>
+          <select id="user-status" required>
+            <option value="active">Actif</option>
+            <option value="inactive">Inactif</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" onclick="closeModal('user-modal')">Annuler</button>
+          <button type="submit" class="save-btn" id="user-save-btn">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div id="vehicle-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('vehicle-modal')">&times;</span>
+      <h2 class="modal-title" id="vehicle-modal-title">Gestion Véhicule</h2>
+      <form id="vehicle-form">
+        <input type="hidden" id="vehicle-id">
+        <div class="form-group">
+          <label for="vehicle-model">Modèle</label>
+          <input type="text" id="vehicle-model" required>
+        </div>
+        <div class="form-group">
+          <label for="vehicle-brand">Marque</label>
+          <input type="text" id="vehicle-brand" required>
+        </div>
+        <div class="form-group">
+          <label for="vehicle-type">Type</label>
+          <select id="vehicle-type" required>
+            <option value="">Sélectionnez un type</option>
+            <option value="electric">Électrique</option>
+            <option value="suv">SUV</option>
+            <option value="sedan">Berline</option>
+            <option value="compact">Compact</option>
+            <option value="luxury">Luxe</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="vehicle-price">Prix par jour (€)</label>
+          <input type="number" id="vehicle-price" min="0" step="5" required>
+        </div>
+        <div class="form-group">
+          <label for="vehicle-status">Disponibilité</label>
+          <select id="vehicle-status" required>
+            <option value="available">Disponible</option>
+            <option value="rented">Loué</option>
+            <option value="maintenance">En maintenance</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" onclick="closeModal('vehicle-modal')">Annuler</button>
+          <button type="submit" class="save-btn" id="vehicle-save-btn">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notification-text"></span>
+  </div>
+  
+ 
+  <script>
+    // Configuration de l'API pour votre backend Express
+    const API_BASE_URL = 'http://localhost:3001'; // Port de votre serveur Express
+    const API_USERS = `${API_BASE_URL}/api/users`;
+    const API_VEHICLES = `${API_BASE_URL}/api/vehicles`;
+
+    // Fonction pour afficher une notification
+    function showNotification(message, isSuccess = true) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+      
+      notificationText.textContent = message;
+      notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Fonction pour formater la date
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return new Date(dateString).toLocaleDateString('fr-FR', options);
+    }
+    
+    // Fonction pour charger les utilisateurs depuis PostgreSQL
+    async function loadUsers() {
+      try {
+        const response = await fetch(API_USERS);
+        if (!response.ok) throw new Error('Erreur lors du chargement des utilisateurs');
+        const users = await response.json();
+        
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
+        
+        users.forEach(user => {
+          const tr = document.createElement('tr');
+          
+          // Désactiver la suppression pour les admins
+          const isAdmin = user.role === 'admin';
+          const disableDelete = isAdmin;
+          
+          tr.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.role === 'admin' ? 'Administrateur' : 
+                  user.role === 'premium' ? 'Client Premium' : 'Client Standard'}</td>
+            <td><span class="status-${user.status}">${user.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
+            <td>${formatDate(user.createdAt)}</td>
+            <td class="action-btns">
+              <button class="edit-btn" onclick="openUserModal(${user.id})">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="delete-btn ${disableDelete ? 'disabled' : ''}" 
+                      onclick="${disableDelete ? '' : `deleteUser(${user.id})`}" 
+                      ${disableDelete ? 'title="Les administrateurs ne peuvent pas être supprimés"' : ''}>
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </td>
+          `;
+          
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger);">${error.message}</td></tr>`;
+        showNotification(error.message, false);
+      }
+    }
+    
+    // Fonction pour charger les véhicules depuis PostgreSQL
+    async function loadVehicles() {
+      try {
+        const response = await fetch(API_VEHICLES);
+        if (!response.ok) throw new Error('Erreur lors du chargement des véhicules');
+        const vehicles = await response.json();
+        
+        const tbody = document.getElementById('vehicles-table-body');
+        tbody.innerHTML = '';
+        
+        vehicles.forEach(vehicle => {
+          const tr = document.createElement('tr');
+          
+          tr.innerHTML = `
+            <td>${vehicle.id}</td>
+            <td>${vehicle.model}</td>
+            <td>${vehicle.brand}</td>
+            <td>${vehicle.type === 'electric' ? 'Électrique' : 
+                   vehicle.type === 'suv' ? 'SUV' : 
+                   vehicle.type === 'sedan' ? 'Berline' : 
+                   vehicle.type === 'compact' ? 'Compact' : 'Luxe'}</td>
+            <td>${vehicle.price} €</td>
+            <td><span class="status-${vehicle.status === 'available' ? 'active' : 'inactive'}">
+                  ${vehicle.status === 'available' ? 'Disponible' : 
+                   vehicle.status === 'rented' ? 'Loué' : 'En maintenance'}
+                </span></td>
+            <td class="action-btns">
+              <button class="edit-btn" onclick="openVehicleModal(${vehicle.id})">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="delete-btn" onclick="deleteVehicle(${vehicle.id})">
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </td>
+          `;
+          
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        const tbody = document.getElementById('vehicles-table-body');
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger);">${error.message}</td></tr>`;
+        showNotification(error.message, false);
+      }
+    }
+    
+    // Fonction pour changer d'onglet
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        // Désactiver tous les onglets et boutons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Activer l'onglet sélectionné
+        button.classList.add('active');
+        const tabId = button.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+    
+    // Fonctions pour les modals
+    async function openUserModal(userId = null) {
+      const modal = document.getElementById('user-modal');
+      const form = document.getElementById('user-form');
+      const title = document.getElementById('user-modal-title');
+      const saveBtn = document.getElementById('user-save-btn');
+      
+      if (userId) {
+        // Mode édition - récupérer l'utilisateur depuis PostgreSQL
+        try {
+          const response = await fetch(`${API_USERS}/${userId}`);
+          if (!response.ok) throw new Error('Erreur lors de la récupération de l\'utilisateur');
+          const user = await response.json();
+          
+          document.getElementById('user-id').value = user.id;
+          document.getElementById('user-name').value = user.name;
+          document.getElementById('user-email').value = user.email;
+          document.getElementById('user-role').value = user.role;
+          document.getElementById('user-status').value = user.status;
+          
+          title.textContent = 'Modifier Utilisateur';
+          saveBtn.textContent = 'Mettre à jour';
+        } catch (error) {
+          showNotification(error.message, false);
+          return;
+        }
+      } else {
+        // Mode création - vider le formulaire
+        form.reset();
+        document.getElementById('user-id').value = '';
+        title.textContent = 'Créer un Nouvel Utilisateur';
+        saveBtn.textContent = 'Créer';
+      }
+      
+      modal.classList.add('active');
+    }
+    
+    async function openVehicleModal(vehicleId = null) {
+      const modal = document.getElementById('vehicle-modal');
+      const form = document.getElementById('vehicle-form');
+      const title = document.getElementById('vehicle-modal-title');
+      const saveBtn = document.getElementById('vehicle-save-btn');
+      
+      if (vehicleId) {
+        // Mode édition - récupérer le véhicule depuis PostgreSQL
+        try {
+          const response = await fetch(`${API_VEHICLES}/${vehicleId}`);
+          if (!response.ok) throw new Error('Erreur lors de la récupération du véhicule');
+          const vehicle = await response.json();
+          
+          document.getElementById('vehicle-id').value = vehicle.id;
+          document.getElementById('vehicle-model').value = vehicle.model;
+          document.getElementById('vehicle-brand').value = vehicle.brand;
+          document.getElementById('vehicle-type').value = vehicle.type;
+          document.getElementById('vehicle-price').value = vehicle.price;
+          document.getElementById('vehicle-status').value = vehicle.status;
+          
+          title.textContent = 'Modifier Véhicule';
+          saveBtn.textContent = 'Mettre à jour';
+        } catch (error) {
+          showNotification(error.message, false);
+          return;
+        }
+      } else {
+        // Mode création - vider le formulaire
+        form.reset();
+        document.getElementById('vehicle-id').value = '';
+        title.textContent = 'Ajouter un Nouveau Véhicule';
+        saveBtn.textContent = 'Ajouter';
+      }
+      
+      modal.classList.add('active');
+    }
+    
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+    
+    // Fonction pour supprimer un utilisateur
+    async function deleteUser(userId) {
+      if (confirm(`Êtes-vous sûr de vouloir supprimer cet utilisateur?`)) {
+        try {
+          const response = await fetch(`${API_USERS}/${userId}`, { method: 'DELETE' });
+          if (!response.ok) throw new Error('Erreur lors de la suppression');
+          
+          showNotification('Utilisateur supprimé avec succès!');
+          loadUsers();
+        } catch (error) {
+          showNotification(error.message, false);
+        }
+      }
+    }
+    
+    // Fonction pour supprimer un véhicule
+    async function deleteVehicle(vehicleId) {
+      if (confirm(`Êtes-vous sûr de vouloir supprimer ce véhicule?`)) {
+        try {
+          const response = await fetch(`${API_VEHICLES}/${vehicleId}`, { method: 'DELETE' });
+          if (!response.ok) throw new Error('Erreur lors de la suppression');
+          
+          showNotification('Véhicule supprimé avec succès!');
+          loadVehicles();
+        } catch (error) {
+          showNotification(error.message, false);
+        }
+      }
+    }
+    
+    // Gestion des formulaires
+    document.getElementById('user-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const userId = document.getElementById('user-id').value;
+      const name = document.getElementById('user-name').value;
+      const email = document.getElementById('user-email').value;
+      const role = document.getElementById('user-role').value;
+      const status = document.getElementById('user-status').value;
+      
+      const userData = { name, email, role, status };
+      
+      try {
+        let response;
+        if (userId) {
+          response = await fetch(`${API_USERS}/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+          });
+        } else {
+          response = await fetch(API_USERS, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+          });
+        }
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message);
+        }
+        
+        showNotification(userId ? 'Utilisateur mis à jour avec succès!' : 'Utilisateur créé avec succès!');
+        loadUsers();
+        closeModal('user-modal');
+      } catch (error) {
+        showNotification(`Erreur: ${error.message}`, false);
+      }
+    });
+    
+    document.getElementById('vehicle-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const vehicleId = document.getElementById('vehicle-id').value;
+      const model = document.getElementById('vehicle-model').value;
+      const brand = document.getElementById('vehicle-brand').value;
+      const type = document.getElementById('vehicle-type').value;
+      const price = parseFloat(document.getElementById('vehicle-price').value);
+      const status = document.getElementById('vehicle-status').value;
+      
+      const vehicleData = { model, brand, type, price, status };
+      
+      try {
+        let response;
+        if (vehicleId) {
+          response = await fetch(`${API_VEHICLES}/${vehicleId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(vehicleData)
+          });
+        } else {
+          response = await fetch(API_VEHICLES, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(vehicleData)
+          });
+        }
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message);
+        }
+        
+        showNotification(vehicleId ? 'Véhicule mis à jour avec succès!' : 'Véhicule ajouté avec succès!');
+        loadVehicles();
+        closeModal('vehicle-modal');
+      } catch (error) {
+        showNotification(`Erreur: ${error.message}`, false);
+      }
+    });
+    
+    // Fonction de déconnexion
+    function logout() {
+      if (confirm("Êtes-vous sûr de vouloir vous déconnecter?")) {
+        window.location.href = 'login.html';
+      }
+    }
+    
+    // Fermer les modals en cliquant en dehors
+    window.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('active');
+      }
+    });
+    
+    // Charger les données au démarrage
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUsers();
+      loadVehicles();
+    });
+  </script>
 </body>
 </html>
-

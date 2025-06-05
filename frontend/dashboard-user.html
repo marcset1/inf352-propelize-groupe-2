@@ -1,39 +1,1247 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Choix API - Propelize</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord - Propelize</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #4cc9f0;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #2b2d42;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --card-border: rgba(255, 255, 255, 0.15);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      min-height: 100vh;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      padding: 20px;
       text-align: center;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
+    
+    .dashboard-container, .login-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 40px;
+      width: 100%;
+      max-width: 1100px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      animation: fadeIn 0.8s ease-out;
     }
-    button {
-      padding: 15px 25px;
+    
+    .login-container {
+      max-width: 500px;
+    }
+    
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      color: var(--secondary);
+      margin-right: 10px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .user-details h2 {
+      font-size: 1.4rem;
+      margin-bottom: 5px;
+      text-align: right;
+    }
+    
+    .user-details p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+    
+    .dashboard-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-content p {
       font-size: 1.2rem;
-      margin: 10px;
-      border: none;
-      border-radius: 6px;
+      margin-bottom: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.9;
+    }
+    
+    .action-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .action-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid var(--card-border);
       cursor: pointer;
-      background-color: #4361ee;
+      backdrop-filter: blur(5px);
+    }
+    
+    .action-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .action-card i {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .action-card h2 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+    
+    .action-card p {
+      font-size: 1rem;
+      margin-bottom: 0;
+      opacity: 0.8;
+    }
+    
+    .logout-btn {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.15);
       color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+    
+    .content-section {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 30px;
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--card-border);
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .vehicles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+    
+    .vehicle-card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: left;
+      transition: transform 0.3s;
+      position: relative;
+    }
+    
+    .vehicle-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .vehicle-image {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+      background: var(--primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      overflow: hidden;
+    }
+    
+    .vehicle-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .vehicle-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    
+    .vehicle-info p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .availability-tag {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--success);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .vehicle-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    
+    .rent-btn {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .rent-btn:hover {
+      background: #3d8b40;
+    }
+    
+    .details-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .details-btn:hover {
+      background: #3251d1;
+    }
+    
+    .profile-info {
+      text-align: left;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .profile-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .profile-field:last-child {
+      border-bottom: none;
+    }
+    
+    .profile-label {
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    
+    .profile-value {
+      font-weight: 300;
+    }
+    
+    .current-rental {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 25px;
+      text-align: left;
+    }
+    
+    .rental-details {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    
+    .rental-image {
+      background: var(--primary);
+      border-radius: 10px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    
+    .rental-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    
+    .rental-info p {
+      margin: 5px 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    
+    .back-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      transition: all 0.3s;
+    }
+    
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    
+    .form-group label {
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      padding: 15px;
+      border-radius: 15px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+    }
+    
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .login-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .login-btn:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .register-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .register-link a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      color: var(--error);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .filters input,
+    .filters select {
+      padding: 12px 20px;
+      border-radius: 15px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      min-width: 250px;
+    }
+    
+    .filters select {
+      cursor: pointer;
+    }
+    
+    .filters input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .active {
+      display: block;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+    }
+    
+    .notification.error {
+      background: var(--error);
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      position: relative;
+      animation: modalFadeIn 0.3s;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: white;
+      background: rgba(0,0,0,0.2);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .vehicle-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .vehicle-details-image {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .vehicle-details-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .vehicle-details-info {
+      text-align: left;
+    }
+    
+    .vehicle-details-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    
+    .vehicle-details-info p {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid var(--secondary);
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-container, .login-container {
+        padding: 25px;
+      }
+      
+      .user-header {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .user-details h2, 
+      .user-details p {
+        text-align: center;
+      }
+      
+      .action-cards {
+        gap: 20px;
+      }
+      
+      .action-card {
+        max-width: 100%;
+      }
+      
+      .vehicles-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .rental-details {
+        grid-template-columns: 1fr;
+      }
+      
+      .filters {
+        flex-direction: column;
+      }
+      
+      .vehicle-details-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Bonjour, que souhaitez-vous faire ?</h1>
-  <button onclick="window.location.href='profil.html'">Voir mon profil</button>
-  <button onclick="window.location.href='vehicule.html'">Rechercher / Louer un véhicule</button>
+  <!-- Conteneur de connexion (visible par défaut) -->
+  <div id="login-container" class="login-container">
+    <div class="logo">
+      <i class="fas fa-car"></i>
+      <span>Propelize</span>
+    </div>
+    
+    <h1>Connexion à votre compte</h1>
+    
+    <form id="login-form" class="login-form">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+      </div>
+      
+      <div id="error-message" class="error-message"></div>
+      
+      <button type="submit" class="login-btn" id="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+        <div class="loading-spinner" id="login-spinner" style="display: none;"></div>
+      </button>
+    </form>
+    
+    <div class="register-link">
+      Pas encore inscrit ? <a href="#" id="register-link">Créer un compte</a>
+    </div>
+  </div>
+  
+  <!-- Tableau de bord (caché par défaut) -->
+  <div id="dashboard-container" class="dashboard-container" style="display: none;">
+    <div class="user-header">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>Propelize</span>
+      </div>
+      <div class="user-info">
+        <div class="user-details">
+          <h2 id="user-name">Jean Dupont</h2>
+          <p id="user-role">Client depuis 2023</p>
+        </div>
+        <div id="user-avatar" class="user-avatar">JD</div>
+      </div>
+    </div>
+    
+    <div class="dashboard-content">
+      <h1 id="welcome-message">Bienvenue sur votre tableau de bord</h1>
+      <p>Gérez vos locations de véhicules en toute simplicité</p>
+      
+      <div class="action-cards">
+        <div class="action-card" onclick="showSection('vehicles')">
+          <i class="fas fa-car"></i>
+          <h2>Véhicules disponibles</h2>
+          <p>Parcourez notre flotte de véhicules disponibles</p>
+        </div>
+        
+        <div class="action-card" onclick="showSection('profile')">
+          <i class="fas fa-user"></i>
+          <h2>Mon profil</h2>
+          <p>Consultez et modifiez votre profil</p>
+        </div>
+      </div>
+      
+      <!-- Section Véhicules Disponibles -->
+      <div id="vehicles" class="content-section">
+        <h2 class="section-title"><i class="fas fa-car"></i> Véhicules disponibles</h2>
+        
+        <div class="filters">
+          <input type="text" id="vehicle-search" placeholder="Marque, modèle ou matricule..." oninput="filterVehicles()">
+          <select id="vehicle-type-filter" onchange="filterVehicles()">
+            <option value="">Tous les types</option>
+            <option value="Citadine">Citadine</option>
+            <option value="SUV">SUV</option>
+            <option value="Berline">Berline</option>
+            <option value="Sport">Sport</option>
+          </select>
+        </div>
+        
+        <div id="vehicles-grid" class="vehicles-grid">
+          <div class="loading-spinner" id="vehicles-spinner"></div>
+        </div>
+        
+        <button class="back-btn" onclick="showDashboard()">
+          <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+        </button>
+      </div>
+      
+      <!-- Section Profil -->
+      <div id="profile" class="content-section">
+        <h2 class="section-title"><i class="fas fa-user"></i> Mon Profil</h2>
+        
+        <div class="profile-info">
+          <div class="profile-field">
+            <span class="profile-label">Nom complet:</span>
+            <span id="profile-name" class="profile-value">Jean Dupont</span>
+          </div>
+          <div class="profile-field">
+            <span class="profile-label">Nom d'utilisateur:</span>
+            <span id="profile-username" class="profile-value">jean.dupont</span>
+          </div>
+          <div class="profile-field">
+            <span class="profile-label">Rôle:</span>
+            <span id="profile-role" class="profile-value">Utilisateur</span>
+          </div>
+          <div class="profile-field">
+            <span class="profile-label">Membre depuis:</span>
+            <span id="profile-created" class="profile-value">15 Mars 2023</span>
+          </div>
+        </div>
+        
+        <div class="current-rental">
+          <h3><i class="fas fa-key"></i> Location en cours</h3>
+          <div id="current-rental-details" class="rental-details">
+            <div class="rental-image">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="rental-info">
+              <h3 id="rental-vehicle">Aucune location en cours</h3>
+              <p>Vous n'avez pas de location active pour le moment</p>
+            </div>
+          </div>
+        </div>
+        
+        <button class="back-btn" onclick="showDashboard()">
+          <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+        </button>
+      </div>
+    </div>
+    
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      Déconnexion
+    </button>
+  </div>
+
+  <!-- Modal pour les détails du véhicule -->
+  <div class="modal" id="vehicle-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div id="vehicle-modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration de l'API pour votre backend Express
+    const API_BASE_URL = 'http://localhost:3001';
+    const API_AUTH = `${API_BASE_URL}/api/auth`;
+    const API_VEHICLES = `${API_BASE_URL}/api/vehicles`;
+    const API_USERS = `${API_BASE_URL}/api/users`;
+    const API_RENTALS = `${API_BASE_URL}/api/rentals`;
+    
+    // Éléments DOM
+    const loginContainer = document.getElementById('login-container');
+    const dashboardContainer = document.getElementById('dashboard-container');
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+    const registerLink = document.getElementById('register-link');
+    const userName = document.getElementById('user-name');
+    const userRole = document.getElementById('user-role');
+    const userAvatar = document.getElementById('user-avatar');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const vehiclesGrid = document.getElementById('vehicles-grid');
+    const profileName = document.getElementById('profile-name');
+    const profileUsername = document.getElementById('profile-username');
+    const profileRole = document.getElementById('profile-role');
+    const profileCreated = document.getElementById('profile-created');
+    const loginSpinner = document.getElementById('login-spinner');
+    const vehiclesSpinner = document.getElementById('vehicles-spinner');
+    const vehicleModal = document.getElementById('vehicle-modal');
+    
+    // Fonction pour afficher une notification
+    function showNotification(message, isError = false) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${isError ? 'error' : ''}`;
+      notification.innerHTML = `
+        <i class="fas fa-${isError ? 'exclamation-circle' : 'check-circle'}"></i>
+        <span>${message}</span>
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    
+    // Fonction pour gérer la connexion
+    async function login(username, password) {
+      try {
+        // Afficher le spinner
+        loginSpinner.style.display = 'block';
+        document.getElementById('login-btn').disabled = true;
+        
+        const response = await fetch(`${API_AUTH}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Échec de la connexion');
+        }
+
+        const data = await response.json();
+        
+        // Stocker les tokens et les données utilisateur
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Mettre à jour l'interface
+        updateUserInfo(data.user);
+        await loadAvailableVehicles();
+        
+        // Afficher le tableau de bord
+        loginContainer.style.display = 'none';
+        dashboardContainer.style.display = 'block';
+        
+        showNotification('Connexion réussie !');
+      } catch (error) {
+        console.error('Erreur de connexion:', error);
+        errorMessage.textContent = error.message;
+        showNotification(error.message || 'Échec de la connexion', true);
+      } finally {
+        // Cacher le spinner
+        loginSpinner.style.display = 'none';
+        document.getElementById('login-btn').disabled = false;
+      }
+    }
+    
+    // Mettre à jour les informations utilisateur dans l'interface
+    function updateUserInfo(user) {
+      userName.textContent = user.name;
+      
+      // Formater la date de création
+      if (user.createdAt) {
+        const createdAt = new Date(user.createdAt);
+        userRole.textContent = `Client depuis ${createdAt.getFullYear()}`;
+      }
+      
+      welcomeMessage.textContent = `Bienvenue, ${user.name}`;
+      userAvatar.textContent = user.name.charAt(0).toUpperCase();
+      
+      // Mettre à jour le profil
+      profileName.textContent = user.name;
+      profileUsername.textContent = user.username;
+      profileRole.textContent = user.role === 'admin' ? 'Administrateur' : 'Utilisateur';
+      
+      // Formater la date de création pour le profil
+      if (user.createdAt) {
+        const createdAt = new Date(user.createdAt);
+        profileCreated.textContent = createdAt.toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+    }
+    
+    // Charger les véhicules disponibles depuis l'API
+    async function loadAvailableVehicles() {
+      try {
+        // Afficher le spinner
+        vehiclesSpinner.style.display = 'block';
+        
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          throw new Error('Non authentifié');
+        }
+
+        const response = await fetch(API_VEHICLES, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+
+        if (response.status === 401) {
+          // Token expiré ou invalide
+          logout();
+          showNotification('Votre session a expiré. Veuillez vous reconnecter.', true);
+          return;
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Échec du chargement des véhicules');
+        }
+
+        const vehicles = await response.json();
+        displayVehicles(vehicles);
+      } catch (error) {
+        console.error('Erreur:', error);
+        showNotification(error.message || 'Impossible de charger les véhicules', true);
+      } finally {
+        // Cacher le spinner
+        vehiclesSpinner.style.display = 'none';
+      }
+    }
+    
+    // Fonction pour filtrer les véhicules par marque, modèle ou matricule
+    function filterVehicles() {
+      const searchTerm = document.getElementById('vehicle-search').value.toLowerCase();
+      const typeFilter = document.getElementById('vehicle-type-filter').value;
+      
+      const vehicles = JSON.parse(localStorage.getItem('vehicles') || '[]');
+      
+      const filteredVehicles = vehicles.filter(vehicle => {
+        // Recherche par marque, modèle ou immatriculation (matricule)
+        const matchesSearch = 
+          (vehicle.marque && vehicle.marque.toLowerCase().includes(searchTerm)) || 
+          (vehicle.model && vehicle.model.toLowerCase().includes(searchTerm)) || 
+          (vehicle.immatriculation && vehicle.immatriculation.toLowerCase().includes(searchTerm));
+        
+        const matchesType = typeFilter ? vehicle.type === typeFilter : true;
+        
+        return matchesSearch && matchesType;
+      });
+      
+      displayVehicles(filteredVehicles);
+    }
+    
+    // Afficher les véhicules dans la grille
+    function displayVehicles(vehicles) {
+      vehiclesGrid.innerHTML = '';
+      
+      // Stocker les véhicules pour le filtrage
+      localStorage.setItem('vehicles', JSON.stringify(vehicles));
+      
+      if (!vehicles || vehicles.length === 0) {
+        vehiclesGrid.innerHTML = `
+          <div class="no-vehicles" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <i class="fas fa-car" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.5;"></i>
+            <h3>Aucun véhicule disponible actuellement</h3>
+            <p>Veuillez réessayer ultérieurement</p>
+          </div>
+        `;
+        return;
+      }
+      
+      vehicles.forEach(vehicle => {
+        const vehicleCard = document.createElement('div');
+        vehicleCard.className = 'vehicle-card';
+        vehicleCard.innerHTML = `
+          <div class="vehicle-image">
+            <img src="${vehicle.image || 'https://via.placeholder.com/300x150?text=Image+Manquante'}" alt="${vehicle.marque} ${vehicle.model}">
+          </div>
+          <div class="availability-tag">${vehicle.status === 'available' ? 'Disponible' : 'Indisponible'}</div>
+          <div class="vehicle-info">
+            <h3>${vehicle.marque} ${vehicle.model}</h3>
+            <p><i class="fas fa-tag"></i> ${vehicle.immatriculation}</p>
+            <p><i class="fas fa-car"></i> ${vehicle.type || 'Type non spécifié'}</p>
+            <p><i class="fas fa-calendar"></i> Année: ${vehicle.annees}</p>
+            <p><i class="fas fa-euro-sign"></i> Prix: ${vehicle.prixLocation}€/jour</p>
+          </div>
+          <div class="vehicle-actions">
+            <button class="rent-btn" onclick="rentVehicle('${vehicle.id}')" ${vehicle.status !== 'available' ? 'disabled' : ''}>
+              <i class="fas fa-key"></i> Louer
+            </button>
+            <button class="details-btn" onclick="showVehicleDetails('${vehicle.id}')">
+              <i class="fas fa-info-circle"></i> Détails
+            </button>
+          </div>
+        `;
+        vehiclesGrid.appendChild(vehicleCard);
+      });
+    }
+    
+    // Fonction pour louer un véhicule
+    async function rentVehicle(vehicleId) {
+      const accessToken = localStorage.getItem('accessToken');
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      if (!accessToken || !user) {
+        showNotification('Veuillez vous connecter pour louer un véhicule', true);
+        return;
+      }
+      
+      try {
+        showNotification(`Demande de location pour le véhicule ${vehicleId} en cours...`);
+        
+        const response = await fetch(API_RENTALS, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            vehicleId: vehicleId,
+            userId: user.id,
+            startDate: new Date().toISOString(),
+            endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+          })
+        });
+
+        if (response.status === 401) {
+          logout();
+          showNotification('Votre session a expiré. Veuillez vous reconnecter.', true);
+          return;
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Échec de la location');
+        }
+
+        const rentalData = await response.json();
+        
+        showNotification('Location confirmée ! Récupérez votre véhicule au point de retrait.', false);
+        
+        // Mettre à jour l'interface
+        document.getElementById('rental-vehicle').textContent = `${rentalData.vehicle.marque} ${rentalData.vehicle.model}`;
+        document.getElementById('current-rental-details').querySelector('p').textContent = 
+          `Du ${new Date(rentalData.startDate).toLocaleDateString()} au ${new Date(rentalData.endDate).toLocaleDateString()}`;
+      } catch (error) {
+        showNotification('Erreur lors de la location: ' + error.message, true);
+      }
+    }
+    
+    // Fonction pour afficher les détails d'un véhicule
+    function showVehicleDetails(vehicleId) {
+      const vehicles = JSON.parse(localStorage.getItem('vehicles') || []);
+      const vehicle = vehicles.find(v => v.id == vehicleId);
+      
+      if (!vehicle) {
+        showNotification('Véhicule non trouvé', true);
+        return;
+      }
+      
+      // Créer le contenu du modal
+      const modalContent = document.getElementById('vehicle-modal-content');
+      modalContent.innerHTML = `
+        <h2>${vehicle.marque} ${vehicle.model}</h2>
+        <div class="vehicle-details-grid">
+          <div class="vehicle-details-image">
+            <img src="${vehicle.image || 'https://via.placeholder.com/300x150?text=Image+Manquante'}" 
+                 alt="${vehicle.marque} ${vehicle.model}">
+          </div>
+          
+          <div class="vehicle-details-info">
+            <h3>Informations du véhicule</h3>
+            <p><i class="fas fa-tag"></i> <strong>Matricule:</strong> ${vehicle.immatriculation}</p>
+            <p><i class="fas fa-car"></i> <strong>Type:</strong> ${vehicle.type || 'Non spécifié'}</p>
+            <p><i class="fas fa-calendar"></i> <strong>Année:</strong> ${vehicle.annees}</p>
+            <p><i class="fas fa-euro-sign"></i> <strong>Prix:</strong> ${vehicle.prixLocation}€/jour</p>
+            <p><i class="fas fa-tachometer-alt"></i> <strong>Kilométrage:</strong> ${vehicle.kilometrage || 'Non spécifié'} km</p>
+            <p><i class="fas fa-gas-pump"></i> <strong>Carburant:</strong> ${vehicle.carburant || 'Non spécifié'}</p>
+            
+            <div style="margin-top: 20px;">
+              <button class="rent-btn" onclick="rentVehicle('${vehicle.id}')" style="width: 100%; padding: 12px;" ${vehicle.status !== 'available' ? 'disabled' : ''}>
+                <i class="fas fa-key"></i> Louer ce véhicule
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: left;">
+          <h3>Description</h3>
+          <p>${vehicle.description || 'Aucune description disponible.'}</p>
+        </div>
+      `;
+      
+      // Afficher le modal
+      vehicleModal.style.display = 'flex';
+    }
+    
+    // Fermer le modal
+    function closeModal() {
+      vehicleModal.style.display = 'none';
+    }
+    
+    // Gérer la déconnexion
+    function logout() {
+      // Supprimer les tokens du stockage local
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      localStorage.removeItem('vehicles');
+      
+      // Afficher l'écran de connexion et cacher le tableau de bord
+      loginContainer.style.display = 'block';
+      dashboardContainer.style.display = 'none';
+      
+      // Réinitialiser le formulaire
+      loginForm.reset();
+      errorMessage.textContent = '';
+      
+      showNotification('Déconnexion réussie');
+    }
+    
+    // Fonctions de navigation
+    function showSection(sectionId) {
+      // Masquer toutes les sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Afficher la section demandée
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Masquer le contenu principal du tableau de bord
+      document.querySelector('.action-cards').style.display = 'none';
+      document.querySelector('.dashboard-content h1').style.display = 'none';
+      document.querySelector('.dashboard-content p').style.display = 'none';
+    }
+    
+    function showDashboard() {
+      // Afficher le contenu principal
+      document.querySelector('.action-cards').style.display = 'flex';
+      document.querySelector('.dashboard-content h1').style.display = 'block';
+      document.querySelector('.dashboard-content p').style.display = 'block';
+      
+      // Masquer toutes les sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+    }
+    
+    // Événements
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (!username || !password) {
+        errorMessage.textContent = 'Veuillez remplir tous les champs';
+        return;
+      }
+      
+      login(username, password);
+    });
+    
+    registerLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      showNotification('Redirection vers la page d\'inscription...');
+      // Ici vous pouvez ajouter la logique pour afficher un formulaire d'inscription
+    });
+    
+    // Vérifier si l'utilisateur est déjà connecté au chargement de la page
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      if (user) {
+        // L'utilisateur est connecté, afficher le tableau de bord
+        loginContainer.style.display = 'none';
+        dashboardContainer.style.display = 'block';
+        updateUserInfo(user);
+        try {
+          await loadAvailableVehicles();
+        } catch (error) {
+          console.error('Erreur lors du chargement des véhicules:', error);
+        }
+      } else {
+        // L'utilisateur n'est pas connecté, afficher le formulaire
+        loginContainer.style.display = 'block';
+        dashboardContainer.style.display = 'none';
+      }
+    });
+    
+    // Fermer le modal si on clique en dehors du contenu
+    window.addEventListener('click', (e) => {
+      if (e.target === vehicleModal) {
+        closeModal();
+      }
+    });
+  </script>
 </body>
 </html>
-

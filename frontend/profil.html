@@ -1,29 +1,950 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mon Profil - Propelize</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #4cc9f0;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #2b2d42;
+      --success: #4ade80;
+      --warning: #f59e0b;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: var(--dark);
+    }
+    
+    .profile-container {
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+      display: flex;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .profile-sidebar {
+      width: 300px;
+      background: linear-gradient(to bottom, var(--primary), var(--accent));
+      color: white;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    
+    .premium-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #ffd700, #ffa500);
+      color: #333;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .user-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(to right, #4cc9f0, #7209b7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 25px;
+      border: 5px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .user-name {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .user-role {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .profile-content {
+      flex: 1;
+      padding: 40px;
+    }
+    
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .profile-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .logout-btn {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .logout-btn:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .info-card {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .info-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .info-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-right: 15px;
+    }
+    
+    .pref .info-icon {
+      background: linear-gradient(to right, var(--accent), #f72585);
+    }
+    
+    .security .info-icon {
+      background: linear-gradient(to right, var(--warning), #ef4444);
+    }
+    
+    .info-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .info-content p {
+      margin-bottom: 12px;
+      display: flex;
+    }
+    
+    .info-label {
+      font-weight: 500;
+      min-width: 140px;
+      color: #495057;
+    }
+    
+    .info-value {
+      font-weight: 400;
+      color: var(--dark);
+      flex: 1;
+    }
+    
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+    
+    .active {
+      background: rgba(74, 222, 128, 0.2);
+      color: #15803d;
+    }
+    
+    .inactive {
+      background: rgba(239, 68, 68, 0.2);
+      color: #b91c1c;
+    }
+    
+    .edit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .edit-btn:hover {
+      background: #3a56d4;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .security-btn {
+      background: var(--warning);
+    }
+    
+    .security-btn:hover {
+      background: #d97706;
+    }
+    
+    .progress-container {
+      margin-top: 30px;
+    }
+    
+    .progress-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .progress-bar {
+      height: 12px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+      border-radius: 10px;
+      width: 85%;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3),
+        transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    @media (max-width: 768px) {
+      .profile-container {
+        flex-direction: column;
+      }
+      
+      .profile-sidebar {
+        width: 100%;
+        padding: 30px 20px;
+      }
+      
+      .profile-content {
+        padding: 30px;
+      }
+      
+      .stats {
+        justify-content: center;
+      }
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      position: relative;
+      animation: modalFadeIn 0.3s;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #777;
+    }
+    
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .save-btn {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .save-btn:hover {
+      background: #3a56d4;
+    }
+    
+    .cancel-btn {
+      background: #e9ecef;
+      color: #495057;
+    }
+    
+    .cancel-btn:hover {
+      background: #dee2e6;
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(67, 97, 238, 0.2);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary);
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Fade out animation */
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+  </style>
 </head>
 <body>
-  <h1>Mon profil utilisateur</h1>
-  <div id="profilContainer"></div>
+  <div class="profile-container" id="profileContainer">
+    <div class="profile-sidebar">
+      <div class="premium-badge" id="premiumBadge">
+        <i class="fas fa-crown"></i> PREMIUM
+      </div>
+      <div class="user-avatar" id="userAvatar">J</div>
+      <div class="user-name" id="userName">Chargement...</div>
+      <div class="user-role" id="userRole">Membre</div>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="projectsCount">0</div>
+          <div class="stat-label">Projets</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="userRating">0.0</div>
+          <div class="stat-label">Évaluation</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-content">
+      <div class="profile-header">
+        <h1 class="profile-title">Mon Profil Propelize</h1>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-header">
+            <div class="info-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="info-title">Informations Personnelles</div>
+          </div>
+          <div class="info-content">
+            <p>
+              <span class="info-label">Nom complet:</span>
+              <span class="info-value" id="fullName">Chargement...</span>
+            </p>
+            <p>
+              <span class="info-label">Email:</span>
+              <span class="info-value" id="userEmail">Chargement...</span>
+            </p>
+            <p>
+              <span class="info-label">Téléphone:</span>
+              <span class="info-value" id="userPhone">Chargement...</span>
+            </p>
+            <p>
+              <span class="info-label">Localisation:</span>
+              <span class="info-value" id="userLocation">Chargement...</span>
+            </p>
+            <button class="edit-btn" onclick="openEditModal('personal')">
+              <i class="fas fa-edit"></i> Modifier les informations
+            </button>
+          </div>
+        </div>
+        
+        <div class="info-card pref">
+          <div class="info-header">
+            <div class="info-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="info-title">Préférences</div>
+          </div>
+          <div class="info-content">
+            <p>
+              <span class="info-label">Langue:</span>
+              <span class="info-value" id="userLanguage">Français</span>
+            </p>
+            <p>
+              <span class="info-label">Devise:</span>
+              <span class="info-value" id="userCurrency">Euro (€)</span>
+            </p>
+            <p>
+              <span class="info-label">Notifications:</span>
+              <span class="info-value">
+                <span id="notificationsStatus">Activées</span>
+                <span class="status-badge active" id="notificationsBadge">Actif</span>
+              </span>
+            </p>
+            <p>
+              <span class="info-label">Thème:</span>
+              <span class="info-value" id="userTheme">Clair</span>
+            </p>
+            <button class="edit-btn" onclick="openEditModal('preferences')">
+              <i class="fas fa-sliders-h"></i> Modifier les préférences
+            </button>
+          </div>
+        </div>
+        
+        <div class="info-card security">
+          <div class="info-header">
+            <div class="info-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="info-title">Sécurité</div>
+          </div>
+          <div class="info-content">
+            <p>
+              <span class="info-label">Mot de passe:</span>
+              <span class="info-value">
+                ********
+                <span class="status-badge active" id="passwordStrength">Fort</span>
+              </span>
+            </p>
+            <p>
+              <span class="info-label">2FA:</span>
+              <span class="info-value">
+                <span id="twoFactorStatus">Activé</span>
+                <span class="status-badge active" id="twoFactorBadge">Actif</span>
+              </span>
+            </p>
+            <p>
+              <span class="info-label">Dernière connexion:</span>
+              <span class="info-value" id="lastLogin">Aujourd'hui, 10:24</span>
+            </p>
+            <p>
+              <span class="info-label">Appareils:</span>
+              <span class="info-value" id="devicesCount">3 appareils</span>
+            </p>
+            <button class="edit-btn security-btn" onclick="openEditModal('security')">
+              <i class="fas fa-lock"></i> Sécurité du compte
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span>Complétion du profil</span>
+          <span id="profileCompletion">85%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour l'édition des informations -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle">Modifier les informations</h2>
+      <div id="modalContent">
+        <!-- Contenu dynamique basé sur le type d'édition -->
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel-btn" onclick="closeModal()">Annuler</button>
+        <button class="modal-btn save-btn" id="saveChangesBtn">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" id="loadingSpinner"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const container = document.getElementById('profilContainer');
-
-      if (user) {
-        container.innerHTML = `
-          <p><strong>Nom:</strong> ${user.name}</p>
-          <p><strong>Rôle:</strong> ${user.role}</p>
-          <p><strong>ID:</strong> ${user.id}</p>
-        `;
-      } else {
-        container.innerHTML = "<p>Erreur : utilisateur non connecté.</p>";
+    // Configuration de l'API
+    const API_BASE_URL = 'http://localhost:3000/api';
+    const USER_PROFILE_URL = `${API_BASE_URL}/users/me`;
+    
+    // Éléments DOM
+    const profileContainer = document.getElementById('profileContainer');
+    const userAvatar = document.getElementById('userAvatar');
+    const userName = document.getElementById('userName');
+    const userRole = document.getElementById('userRole');
+    const fullName = document.getElementById('fullName');
+    const userEmail = document.getElementById('userEmail');
+    const userPhone = document.getElementById('userPhone');
+    const userLocation = document.getElementById('userLocation');
+    const projectsCount = document.getElementById('projectsCount');
+    const userRating = document.getElementById('userRating');
+    const editModal = document.getElementById('editModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    const saveChangesBtn = document.getElementById('saveChangesBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const profileCompletion = document.getElementById('profileCompletion');
+    const progressFill = document.getElementById('progressFill');
+    
+    // État de l'application
+    let currentUser = null;
+    let currentEditType = '';
+    
+    // Fonction pour afficher le chargement
+    function showLoading(show) {
+      loadingSpinner.style.display = show ? 'block' : 'none';
+    }
+    
+    // Fonction pour récupérer les données de l'utilisateur
+    async function fetchUserProfile() {
+      showLoading(true);
+      
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          throw new Error('Aucun token d\'authentification trouvé');
+        }
+        
+        const response = await fetch(USER_PROFILE_URL, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération du profil');
+        }
+        
+        const userData = await response.json();
+        currentUser = userData;
+        
+        // Mettre à jour l'interface avec les données
+        updateProfileUI(userData);
+        
+        // Calculer la complétion du profil
+        calculateProfileCompletion(userData);
+        
+      } catch (error) {
+        console.error('Erreur:', error.message);
+        alert(`Erreur: ${error.message}. Veuillez vous reconnecter.`);
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+      } finally {
+        showLoading(false);
       }
+    }
+    
+    // Mettre à jour l'interface avec les données utilisateur
+    function updateProfileUI(user) {
+      // Informations de base
+      userAvatar.textContent = user.fullName ? user.fullName.charAt(0).toUpperCase() : 'U';
+      userName.textContent = user.fullName || user.username;
+      userRole.textContent = user.role || 'Membre';
+      fullName.textContent = user.fullName || 'Non spécifié';
+      userEmail.textContent = user.email || 'Non spécifié';
+      userPhone.textContent = user.phone || 'Non spécifié';
+      userLocation.textContent = user.location || 'Non spécifié';
+      
+      // Statistiques
+      projectsCount.textContent = user.stats?.projects || 0;
+      userRating.textContent = user.stats?.rating?.toFixed(1) || '0.0';
+      
+      // Préférences
+      if (user.preferences) {
+        document.getElementById('userLanguage').textContent = 
+          user.preferences.language === 'en' ? 'Anglais' : 'Français';
+        document.getElementById('userCurrency').textContent = 
+          user.preferences.currency === 'USD' ? 'Dollar ($)' : 'Euro (€)';
+        document.getElementById('notificationsStatus').textContent = 
+          user.preferences.notifications ? 'Activées' : 'Désactivées';
+        document.getElementById('userTheme').textContent = 
+          user.preferences.theme === 'dark' ? 'Sombre' : 'Clair';
+      }
+      
+      // Badge premium
+      const premiumBadge = document.getElementById('premiumBadge');
+      if (user.isPremium) {
+        premiumBadge.style.display = 'flex';
+      } else {
+        premiumBadge.style.display = 'none';
+      }
+    }
+    
+    // Calculer le pourcentage de complétion du profil
+    function calculateProfileCompletion(user) {
+      let completion = 0;
+      const totalFields = 6; // Nombre de champs principaux
+      let filledFields = 0;
+      
+      if (user.fullName) filledFields++;
+      if (user.email) filledFields++;
+      if (user.phone) filledFields++;
+      if (user.location) filledFields++;
+      if (user.preferences?.language) filledFields++;
+      if (user.preferences?.theme) filledFields++;
+      
+      completion = Math.round((filledFields / totalFields) * 100);
+      profileCompletion.textContent = `${completion}%`;
+      progressFill.style.width = `${completion}%`;
+    }
+    
+    // Ouvrir le modal d'édition
+    function openEditModal(type) {
+      currentEditType = type;
+      
+      switch(type) {
+        case 'personal':
+          modalTitle.textContent = 'Modifier les informations personnelles';
+          modalContent.innerHTML = `
+            <div class="form-group">
+              <label for="editFullName">Nom complet</label>
+              <input type="text" id="editFullName" value="${currentUser.fullName || ''}">
+            </div>
+            <div class="form-group">
+              <label for="editPhone">Téléphone</label>
+              <input type="text" id="editPhone" value="${currentUser.phone || ''}">
+            </div>
+            <div class="form-group">
+              <label for="editLocation">Localisation</label>
+              <input type="text" id="editLocation" value="${currentUser.location || ''}">
+            </div>
+          `;
+          break;
+          
+        case 'preferences':
+          modalTitle.textContent = 'Modifier les préférences';
+          modalContent.innerHTML = `
+            <div class="form-group">
+              <label for="editLanguage">Langue</label>
+              <select id="editLanguage">
+                <option value="fr" ${currentUser.preferences?.language === 'fr' ? 'selected' : ''}>Français</option>
+                <option value="en" ${currentUser.preferences?.language === 'en' ? 'selected' : ''}>Anglais</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editCurrency">Devise</label>
+              <select id="editCurrency">
+                <option value="EUR" ${currentUser.preferences?.currency === 'EUR' ? 'selected' : ''}>Euro (€)</option>
+                <option value="USD" ${currentUser.preferences?.currency === 'USD' ? 'selected' : ''}>Dollar ($)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editTheme">Thème</label>
+              <select id="editTheme">
+                <option value="light" ${currentUser.preferences?.theme === 'light' ? 'selected' : ''}>Clair</option>
+                <option value="dark" ${currentUser.preferences?.theme === 'dark' ? 'selected' : ''}>Sombre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editNotifications">
+                <input type="checkbox" id="editNotifications" ${currentUser.preferences?.notifications ? 'checked' : ''}>
+                Recevoir les notifications
+              </label>
+            </div>
+          `;
+          break;
+          
+        case 'security':
+          modalTitle.textContent = 'Sécurité du compte';
+          modalContent.innerHTML = `
+            <div class="form-group">
+              <label for="currentPassword">Mot de passe actuel</label>
+              <input type="password" id="currentPassword">
+            </div>
+            <div class="form-group">
+              <label for="newPassword">Nouveau mot de passe</label>
+              <input type="password" id="newPassword">
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+              <input type="password" id="confirmPassword">
+            </div>
+            <div class="form-group">
+              <label for="twoFactor">
+                <input type="checkbox" id="twoFactor" ${currentUser.twoFactorEnabled ? 'checked' : ''}>
+                Activer l'authentification à deux facteurs
+              </label>
+            </div>
+          `;
+          break;
+      }
+      
+      editModal.style.display = 'flex';
+    }
+    
+    // Fermer le modal
+    function closeModal() {
+      editModal.style.display = 'none';
+    }
+    
+    // Enregistrer les modifications
+    async function saveChanges() {
+      showLoading(true);
+      
+      try {
+        let updateData = {};
+        
+        switch(currentEditType) {
+          case 'personal':
+            updateData = {
+              fullName: document.getElementById('editFullName').value,
+              phone: document.getElementById('editPhone').value,
+              location: document.getElementById('editLocation').value
+            };
+            break;
+            
+          case 'preferences':
+            updateData = {
+              preferences: {
+                language: document.getElementById('editLanguage').value,
+                currency: document.getElementById('editCurrency').value,
+                theme: document.getElementById('editTheme').value,
+                notifications: document.getElementById('editNotifications').checked
+              }
+            };
+            break;
+            
+          case 'security':
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword && newPassword !== confirmPassword) {
+              throw new Error('Les mots de passe ne correspondent pas');
+            }
+            
+            updateData = {
+              currentPassword: document.getElementById('currentPassword').value,
+              newPassword: newPassword,
+              twoFactorEnabled: document.getElementById('twoFactor').checked
+            };
+            break;
+        }
+        
+        // Envoyer la requête de mise à jour
+        const token = localStorage.getItem('accessToken');
+        const response = await fetch(USER_PROFILE_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(updateData)
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erreur lors de la mise à jour');
+        }
+        
+        // Actualiser les données utilisateur
+        await fetchUserProfile();
+        closeModal();
+        alert('Modifications enregistrées avec succès!');
+        
+      } catch (error) {
+        console.error('Erreur:', error.message);
+        alert(`Erreur: ${error.message}`);
+      } finally {
+        showLoading(false);
+      }
+    }
+    
+    // Déconnexion
+    function logout() {
+      // Animation de déconnexion
+      profileContainer.style.animation = 'fadeOut 0.8s forwards';
+      
+      setTimeout(() => {
+        // Supprimer le token du localStorage
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        
+        // Rediriger vers la page de connexion
+        window.location.href = 'login.html';
+      }, 800);
+    }
+    
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      // Vérifier si l'utilisateur est connecté
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Veuillez vous connecter pour accéder à cette page');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Charger les données du profil
+      fetchUserProfile();
+      
+      // Configurer le bouton d'enregistrement
+      saveChangesBtn.addEventListener('click', saveChanges);
     });
   </script>
 </body>
 </html>
-

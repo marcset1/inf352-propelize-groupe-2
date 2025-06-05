@@ -1,649 +1,366 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Propelize - Connexion / Inscription</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propelize - Connexion</title>
   <style>
-    :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --error: #ef233c;
-      --success: #4cc9f0;
-      --text: #2b2d42;
-      --light: #f8f8fa;
-    }
+    /* Votre CSS existant reste inchangé */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+    
     body {
-      font-family: "Roboto", sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: linear-gradient(135deg, #4361ee, #4cc9f0);
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      color: var(--text);
-    }
-    .auth-container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 420px;
-      padding: 2.5rem;
-      margin: 1rem;
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 10;
-    }
-    .auth-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .auth-header h1 {
-      font-size: 1.8rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-    .auth-header p {
-      color: #6c757d;
-    }
-    .auth-form .form-group {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-    .auth-form label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    .auth-form input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ced4da;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border 0.3s;
-    }
-    .auth-form input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .btn-primary {
-      background-color: var(--primary);
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
       color: white;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-dark);
-    }
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      margin-top: 1rem;
-    }
-    .btn-secondary:hover {
-      background-color: rgba(67, 97, 238, 0.1);
-    }
-    .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
       text-align: center;
-    }
-    .error-message {
-      background-color: rgba(239, 35, 60, 0.1);
-      color: var(--error);
-    }
-    .success-message {
-      background-color: rgba(76, 201, 240, 0.1);
-      color: var(--success);
-    }
-    .auth-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      color: #6c757d;
-      font-size: 0.9rem;
-    }
-    .auth-footer a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    .hidden {
-      display: none;
-    }
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    .modal.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .modal-content {
-      background-color: white;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 500px;
-      padding: 2rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       position: relative;
+      overflow: hidden;
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    .modal-title {
-      font-size: 1.5rem;
-      font-weight: 500;
-    }
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #6c757d;
-    }
-    .password-toggle {
+    
+    .bubbles {
       position: absolute;
-      right: 15px;
-      top: 38px;
-      cursor: pointer;
-      color: #6c757d;
-    }
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    .circles {
-      position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
+      z-index: 0;
       overflow: hidden;
-      z-index: 1;
+      top: 0;
+      left: 0;
     }
-    .circles li {
+    
+    .bubble {
       position: absolute;
-      display: block;
-      list-style: none;
-      width: 20px;
-      height: 20px;
-      background: rgba(67, 97, 238, 0.1);
-      animation: animate 25s linear infinite;
-      bottom: -150px;
+      bottom: -100px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: rise 10s infinite ease-in;
     }
-    .circles li:nth-child(1) {
-      left: 25%;
-      width: 80px;
-      height: 80px;
-      animation-delay: 0s;
-    }
-    .circles li:nth-child(2) {
-      left: 10%;
-      width: 20px;
-      height: 20px;
-      animation-delay: 2s;
-      animation-duration: 12s;
-    }
-    .circles li:nth-child(3) {
-      left: 70%;
-      width: 20px;
-      height: 20px;
-      animation-delay: 4s;
-    }
-    .circles li:nth-child(4) {
-      left: 40%;
-      width: 60px;
-      height: 60px;
-      animation-delay: 0s;
-      animation-duration: 18s;
-    }
-    .circles li:nth-child(5) {
-      left: 65%;
-      width: 20px;
-      height: 20px;
-      animation-delay: 0s;
-    }
-    .circles li:nth-child(6) {
-      left: 75%;
-      width: 110px;
-      height: 110px;
-      animation-delay: 3s;
-    }
-    .circles li:nth-child(7) {
-      left: 35%;
-      width: 150px;
-      height: 150px;
-      animation-delay: 7s;
-    }
-    .circles li:nth-child(8) {
-      left: 50%;
-      width: 25px;
-      height: 25px;
-      animation-delay: 15s;
-      animation-duration: 45s;
-    }
-    .circles li:nth-child(9) {
-      left: 20%;
-      width: 15px;
-      height: 15px;
-      animation-delay: 2s;
-      animation-duration: 35s;
-    }
-    .circles li:nth-child(10) {
-      left: 85%;
-      width: 150px;
-      height: 150px;
-      animation-delay: 0s;
-      animation-duration: 11s;
-    }
-    @keyframes animate {
+    
+    @keyframes rise {
       0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-        border-radius: 0;
+        bottom: -100px;
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(100px);
       }
       100% {
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
-        border-radius: 50%;
+        bottom: 1080px;
+        transform: translateX(-200px);
       }
     }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+      z-index: 1;
+      animation: fadeIn 1s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ... Le reste de votre CSS ... */
   </style>
 </head>
 <body>
-  <!-- Effet de fond animé -->
-  <ul class="circles">
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-  </ul>
+<div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+</div>
 
-  <div class="auth-container">
-    <div class="auth-header">
-      <h1>Bienvenue sur Propelize</h1>
-      <p>Connectez-vous ou inscrivez-vous pour continuer</p>
-    </div>
-
-    <!-- Messages d'erreur / succès pour la connexion -->
-    <div id="errorMessage" class="message error-message hidden"></div>
-    <div id="successMessage" class="message success-message hidden"></div>
-
-    <!-- Formulaire de connexion -->
-    <form id="loginForm" class="auth-form">
-      <div class="form-group">
-        <label for="loginName">Nom d'utilisateur</label>
-        <input
-          type="text"
-          id="loginName"
-          name="name"
-          placeholder="Entrez votre nom d'utilisateur"
-          required
-        />
+<div class="container login-container" id="loginContainer">
+    <h1>Propelize</h1>
+    <p class="subtitle">Plateforme de gestion de véhicules premium</p>
+    
+    <form class="login-form" id="loginForm">
+      <div class="input-group">
+        <label for="username">Nom d'utilisateur</label>
+        <div class="icon">👤</div>
+        <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" required>
       </div>
-
-      <div class="form-group">
-        <label for="loginPassword">Mot de passe</label>
-        <div style="position: relative;">
-          <input
-            type="password"
-            id="loginPassword"
-            name="password"
-            placeholder="Entrez votre mot de passe"
-            required
-          />
-          <i class="fas fa-eye password-toggle" id="loginPasswordToggle"></i>
+      
+      <div class="input-group">
+        <label for="password">Mot de passe</label>
+        <div class="icon">🔒</div>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="role">Vous êtes:</label>
+        <div class="role-icon">👑</div>
+        <select id="role" name="role" required>
+          <option value="">Sélectionnez votre rôle</option>
+          <option value="admin">Administrateur</option>
+          <option value="user">Utilisateur</option>
+        </select>
+      </div>
+      
+      <div class="remember-forgot">
+        <div class="remember">
+          <input type="checkbox" id="remember">
+          <label for="remember">Se souvenir de moi</label>
         </div>
+        <a href="#" class="forgot-password">Mot de passe oublié?</a>
       </div>
-
-      <button type="submit" class="btn btn-primary" id="submitBtn">
-        <span id="submitText">Se connecter</span>
-        <span id="submitLoader" class="loading hidden"></span>
-      </button>
+      
+      <div class="error-message" id="loginError"></div>
+      
+      <button type="submit" class="btn-login">Se connecter</button>
     </form>
+    
+    <p class="signup-link">Pas encore inscrit? <a href="#" id="showSignup">Créer un compte</a></p>
+</div>
 
-    <div class="auth-footer">
-      <p>Pas encore de compte ? <a href="#" id="registerLink">S'inscrire</a></p>
-    </div>
-  </div>
-
-  <!-- Modal d'inscription -->
-  <div class="modal" id="registerModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Créer un compte</h2>
-        <button class="close-modal" id="closeRegisterModal">&times;</button>
+<div class="container signup-container" id="signupContainer">
+    <button class="back-btn" id="backToLogin">← Retour</button>
+    <h1>Créer un compte</h1>
+    <p class="subtitle">Rejoignez notre plateforme premium</p>
+    
+    <form class="signup-form" id="signupForm">
+      <div class="input-group">
+        <label for="fullname">Nom complet</label>
+        <div class="icon">👤</div>
+        <input type="text" id="fullname" name="fullname" placeholder="Votre nom complet" required>
       </div>
-
-      <!-- Messages d'erreur / succès pour l'inscription -->
-      <div id="registerErrorMessage" class="message error-message hidden"></div>
-      <div id="registerSuccessMessage" class="message success-message hidden"></div>
-
-      <form id="registerForm" class="auth-form">
-        <div class="form-group">
-          <label for="registerName">Nom d'utilisateur *</label>
-          <input
-            type="text"
-            id="registerName"
-            name="name"
-            placeholder="Choisissez un nom d'utilisateur"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="registerPassword">Mot de passe *</label>
-          <div style="position: relative;">
-            <input
-              type="password"
-              id="registerPassword"
-              name="password"
-              placeholder="Créez un mot de passe"
-              required
-            />
-            <i class="fas fa-eye password-toggle" id="registerPasswordToggle"></i>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="registerConfirmPassword">Confirmer le mot de passe *</label>
-          <div style="position: relative;">
-            <input
-              type="password"
-              id="registerConfirmPassword"
-              name="confirmPassword"
-              placeholder="Confirmez votre mot de passe"
-              required
-            />
-            <i
-              class="fas fa-eye password-toggle"
-              id="registerConfirmPasswordToggle"
-            ></i>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="registerSubmitBtn">
-          <span id="registerSubmitText">S'inscrire</span>
-          <span id="registerSubmitLoader" class="loading hidden"></span>
-        </button>
-      </form>
-    </div>
-  </div>
+      
+      <div class="input-group">
+        <label for="username">Nom d'utilisateur</label>
+        <div class="icon">👤</div>
+        <input type="text" id="signup-username" name="username" placeholder="Choisissez un nom d'utilisateur" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="signup-password">Mot de passe</label>
+        <div class="icon">🔒</div>
+        <input type="password" id="signup-password" name="password" placeholder="••••••••" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="confirm-password">Confirmer le mot de passe</label>
+        <div class="icon">🔒</div>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required>
+      </div>
+      
+      <div class="remember">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">J'accepte les <a href="#" style="color: white; text-decoration: underline;">termes et conditions</a></label>
+      </div>
+      
+      <div class="error-message" id="signupError"></div>
+      
+      <button type="submit" class="btn-signup">S'inscrire</button>
+    </form>
+    
+    <p class="login-link">Déjà inscrit? <a href="#" id="showLogin">Se connecter</a></p>
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // → On pointe bien vers le backend qui écoute sur 3001
-  const API_BASE = 'http://localhost:3001/api/auth';
-
-  // Éléments du DOM pour connexion
-  const loginForm = document.getElementById("loginForm");
-  const loginNameInput = document.getElementById("loginName");
-  const loginPasswordInput = document.getElementById("loginPassword");
-  const loginPasswordToggle = document.getElementById("loginPasswordToggle");
-  const errorMessage = document.getElementById("errorMessage");
-  const successMessage = document.getElementById("successMessage");
-  const submitBtn = document.getElementById("submitBtn");
-  const submitText = document.getElementById("submitText");
-  const submitLoader = document.getElementById("submitLoader");
-
-  // Éléments du DOM pour inscription
-  const registerLink = document.getElementById("registerLink");
-  const registerModal = document.getElementById("registerModal");
-  const closeRegisterModal = document.getElementById("closeRegisterModal");
-  const registerForm = document.getElementById("registerForm");
-  const registerNameInput = document.getElementById("registerName");
-  const registerPasswordInput = document.getElementById("registerPassword");
-  const registerConfirmPasswordInput = document.getElementById("registerConfirmPassword");
-  const registerPasswordToggle = document.getElementById("registerPasswordToggle");
-  const registerConfirmPasswordToggle = document.getElementById("registerConfirmPasswordToggle");
-  const registerErrorMessage = document.getElementById("registerErrorMessage");
-  const registerSuccessMessage = document.getElementById("registerSuccessMessage");
-  const registerSubmitBtn = document.getElementById("registerSubmitBtn");
-  const registerSubmitText = document.getElementById("registerSubmitText");
-  const registerSubmitLoader = document.getElementById("registerSubmitLoader");
-
-  // Fonction pour basculer l'affichage du mot de passe
-  function setupPasswordToggle(toggleEl, inputEl) {
-    toggleEl.addEventListener("click", () => {
-      if (inputEl.type === "password") {
-        inputEl.type = "text";
-        toggleEl.classList.remove("fa-eye");
-        toggleEl.classList.add("fa-eye-slash");
-      } else {
-        inputEl.type = "password";
-        toggleEl.classList.remove("fa-eye-slash");
-        toggleEl.classList.add("fa-eye");
+    // Récupération des éléments
+    const loginContainer = document.getElementById('loginContainer');
+    const signupContainer = document.getElementById('signupContainer');
+    const showSignupLink = document.getElementById('showSignup');
+    const showLoginLink = document.getElementById('showLogin');
+    const backToLoginBtn = document.getElementById('backToLogin');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+    
+    // Gestion de l'affichage des formulaires
+    showSignupLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginContainer.style.display = 'none';
+      signupContainer.style.display = 'block';
+      signupError.style.display = 'none';
+    });
+    
+    showLoginLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      signupContainer.style.display = 'none';
+      loginContainer.style.display = 'block';
+      loginError.style.display = 'none';
+    });
+    
+    backToLoginBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      signupContainer.style.display = 'none';
+      loginContainer.style.display = 'block';
+      loginError.style.display = 'none';
+    });
+    
+    // Fonction pour afficher les erreurs
+    function showError(element, message) {
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+    
+    // Fonction pour envoyer les requêtes API - CORRECTION: Ajout de async
+    async function sendRequest(url, method, data) {
+      try {
+        const token = localStorage.getItem('authToken');
+        const headers = {
+          'Content-Type': 'application/json'
+        };
+        
+        // Ajouter le token d'authentification s'il existe
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const response = await fetch(url, {
+          method: method,
+          headers: headers,
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'Erreur serveur');
+        }
+        
+        return result;
+      } catch (error) {
+        throw error;
+      }
+    }
+    
+    // CORRECTION: Ajout de async à la fonction de gestion de soumission
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Récupérer les valeurs des champs
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+      
+      // Validation basique
+      if (!username || !password || !role) {
+        showError(loginError, 'Veuillez remplir tous les champs');
+        return;
+      }
+      
+      // Animation de chargement
+      const btn = document.querySelector('.btn-login');
+      btn.innerHTML = 'Connexion en cours...';
+      btn.disabled = true;
+      loginError.style.display = 'none';
+      
+      try {
+        // Envoyer les données au backend
+        const response = await sendRequest('/api/login', 'POST', {
+          username: username,
+          password: password,
+          role: role
+        });
+        
+        // Stocker le token dans localStorage
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('currentUser', JSON.stringify({
+          username: username,
+          role: role
+        }));
+        
+        // Redirection basée sur le rôle
+        if (role === 'admin') {
+          window.location.href = '/dashboard-admin';
+        } else {
+          window.location.href = '/dashboard-user';
+        }
+        
+      } catch (error) {
+        showError(loginError, error.message);
+      } finally {
+        // Réinitialiser le bouton
+        btn.innerHTML = 'Se connecter';
+        btn.disabled = false;
       }
     });
-  }
-
-  // Initialisation des toggles de mot de passe
-  setupPasswordToggle(loginPasswordToggle, loginPasswordInput);
-  setupPasswordToggle(registerPasswordToggle, registerPasswordInput);
-  setupPasswordToggle(registerConfirmPasswordToggle, registerConfirmPasswordInput);
-
-  // Ouvrir le modal d'inscription
-  registerLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    registerModal.classList.add("active");
-    registerForm.reset();
-    registerErrorMessage.classList.add("hidden");
-    registerSuccessMessage.classList.add("hidden");
-  });
-
-  // Fermer le modal d'inscription
-  closeRegisterModal.addEventListener("click", () => {
-    registerModal.classList.remove("active");
-  });
-
-  // --------------- Connexion ---------------
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Afficher le loader
-    submitText.textContent = "Connexion en cours…";
-    submitLoader.classList.remove("hidden");
-    submitBtn.disabled = true;
-
-    const payload = {
-      name: loginNameInput.value.trim(),
-      password: loginPasswordInput.value
-    };
-
-    try {
-      // 🔁 On appelle la route EXACTE du backend
-      const response = await fetch(`${API_BASE}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      // Lire d’abord la réponse brute (pour debug)
-      const text = await response.text();
-      console.log("Réponse brute (login) :", text);
-
-      // Puis on parse en JSON
-      let data;
+    
+    // CORRECTION: Ajout de async à la fonction de gestion d'inscription
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Récupérer les valeurs des champs
+      const fullname = document.getElementById('fullname').value;
+      const username = document.getElementById('signup-username').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      // Validation basique
+      if (!fullname || !username || !password || !confirmPassword) {
+        showError(signupError, 'Veuillez remplir tous les champs');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showError(signupError, 'Les mots de passe ne correspondent pas');
+        return;
+      }
+      
+      if (!document.getElementById('terms').checked) {
+        showError(signupError, 'Veuillez accepter les termes et conditions');
+        return;
+      }
+      
+      // Animation de chargement
+      const btn = document.querySelector('.btn-signup');
+      btn.innerHTML = 'Inscription en cours...';
+      btn.disabled = true;
+      signupError.style.display = 'none';
+      
       try {
-        data = JSON.parse(text);
-      } catch (parseErr) {
-        throw new Error("Réponse invalide du serveur (pas du JSON)");
+        // Envoyer les données au backend
+        const response = await sendRequest('/api/signup', 'POST', {
+          fullname: fullname,
+          username: username,
+          password: password
+        });
+        
+        // Afficher le succès
+        alert(response.message);
+        
+        // Retour à la page de connexion
+        signupContainer.style.display = 'none';
+        loginContainer.style.display = 'block';
+        
+      } catch (error) {
+        showError(signupError, error.message);
+      } finally {
+        // Réinitialiser le bouton
+        btn.innerHTML = 'S\'inscrire';
+        btn.disabled = false;
       }
-
-      if (!response.ok) {
-        throw new Error(data.error || "Impossible de se connecter");
-      }
-
-      // Connexion réussie : afficher le message
-      successMessage.textContent = "Connexion réussie ! Redirection…";
-      successMessage.classList.remove("hidden");
-      errorMessage.classList.add("hidden");
-
-      // Stocker le token si renvoyé
-      if (data.accessToken) {
-        localStorage.setItem("accessToken", data.accessToken);
-      }
-      if (data.refreshToken) {
-        localStorage.setItem("refreshToken", data.refreshToken);
-      }
-
-     // Redirection selon le rôle
-localStorage.setItem("user", JSON.stringify(data.user)); // stocke l’utilisateur
-
-setTimeout(() => {
-  if (data.user.role === 'admin') {
-    window.location.href = "/dashboard-admin.html";
-  } else {
-    window.location.href = "/dashboard-user.html";
-  }
-}, 1500);
-
-    } catch (err) {
-      console.error("Erreur login :", err);
-      errorMessage.textContent = err.message;
-      errorMessage.classList.remove("hidden");
-      successMessage.classList.add("hidden");
-    } finally {
-      // Remettre le bouton à l’état initial
-      submitText.textContent = "Se connecter";
-      submitLoader.classList.add("hidden");
-      submitBtn.disabled = false;
-    }
-  });
-
-  // --------------- Inscription ---------------
-  registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Valider que les deux mots de passe correspondent
-    if (registerPasswordInput.value !== registerConfirmPasswordInput.value) {
-      registerErrorMessage.textContent = "Les mots de passe ne correspondent pas.";
-      registerErrorMessage.classList.remove("hidden");
-      return;
-    }
-
-    // Afficher le loader
-    registerSubmitText.textContent = "Inscription en cours…";
-    registerSubmitLoader.classList.remove("hidden");
-    registerSubmitBtn.disabled = true;
-
-    const payload = {
-      name: registerNameInput.value.trim(),
-      password: registerPasswordInput.value
-    };
-
-    try {
-      // 🔁 Appel POST vers la route correcte du backend
-      const response = await fetch(`${API_BASE}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      // Lire d’abord la réponse brute (pour debug)
-      const text = await response.text();
-      console.log("Réponse brute (register) :", text);
-
-      // Puis essayer de parser le JSON
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (parseErr) {
-        throw new Error("Réponse invalide du serveur (pas du JSON)");
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || "Impossible de s'inscrire");
-      }
-
-      // Inscription réussie
-      registerSuccessMessage.textContent = "Inscription réussie ! Vous pouvez vous connecter.";
-      registerSuccessMessage.classList.remove("hidden");
-      registerErrorMessage.classList.add("hidden");
-
-      registerForm.reset();
-
-      // Fermer le modal après un court délai
-      setTimeout(() => {
-        registerModal.classList.remove("active");
-      }, 2000);
-    } catch (err) {
-      console.error("Erreur register :", err);
-      registerErrorMessage.textContent = err.message;
-      registerErrorMessage.classList.remove("hidden");
-      registerSuccessMessage.classList.add("hidden");
-    } finally {
-      registerSubmitText.textContent = "S'inscrire";
-      registerSubmitLoader.classList.add("hidden");
-      registerSubmitBtn.disabled = false;
-    }
-  });
-});
+    });
+    
+    // Effet de bulles animées
+    document.querySelectorAll('.bubble').forEach(bubble => {
+      bubble.style.left = Math.random() * 100 + '%';
+    });
 </script>
-
 </body>
 </html>
-

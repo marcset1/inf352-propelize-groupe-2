@@ -15,9 +15,9 @@ const router = Router();
 
 // Routes publiques ou accessibles aux utilisateurs connectés
 router.get('/', authenticate, getAllVehicles);
-router.get('/:id', authenticate, getVehicleById);
 router.get('/search/:immatriculation', authenticate, searchByImmatriculation);
 router.get('/price/:priceMax', authenticate, filterByPrice);
+router.get('/:id', authenticate, getVehicleById);
 
 // Routes sécurisées (admin uniquement)
 router.post('/', authenticate, requireAdmin, createVehicle);
