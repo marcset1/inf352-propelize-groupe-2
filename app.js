@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import pinoHttp from 'pino-http';
 import cors from 'cors';
-import dotenv from 'dotenv';
+
 
 // Import utilities
 import logger from './middleware/logger.js';
@@ -16,8 +16,6 @@ import vehicleRoutes from './routes/vehicle.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 
-
-dotenv.config();
 
 const app = express();
 
