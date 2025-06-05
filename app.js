@@ -1,39 +1,28 @@
+//app.js
 import express from 'express';
 import bodyParser from 'body-parser';
 import pinoHttp from 'pino-http';
 import cors from 'cors';
-import dotenv from 'dotenv';
-
-// Import utilities
 import logger from './middleware/logger.js';
-
-// Import database and seeders
 import { connectDB } from './config/db.js';
-import { seedAll } from './data/seedData.js'; // Modification ici pour utiliser seedAll
-
-// Import routes
+import { seedAll } from './data/seedData.js';
 import vehicleRoutes from './routes/vehicle.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 
-
-dotenv.config();
-
 const app = express();
 
 // Initialize database and seed data
-const initializeApp = async () => {
+export const initializeApp = async () => {
   try {
-    // Connect to database first
     await connectDB();
-    
-    // Then seed the database with initial data (users and vehicles)
-    await seedAll(); // Modification ici pour seed users et vehicles
-    
+    if (process.env.NODE_ENV === 'test') {
+      await seedAll(); // Seed only in test environment
+    }
     logger.info('Database initialized and seeded successfully');
   } catch (error) {
     logger.error('Failed to initialize database:', error);
-    process.exit(1);
+    throw error;
   }
 };
 
@@ -45,27 +34,32 @@ app.use(cors());
 // Routes
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
-app.use('/vehicles', vehicleRoutes); 
+app.use('/vehicles', vehicleRoutes);
 
 // Health check route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     status: 'running',
-    message: "Vehicle Rental API Service",
-    timestamp: new Date().toISOString()
+    message: 'Vehicle Rental API Service',
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   logger.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Internal Server Error',
-    message: err.message 
+    message: err.message,
   });
 });
 
-// Initialize the application
-initializeApp();
+// Initialize app only if not in test environment or explicitly required
+if (process.env.NODE_ENV !== 'test') {
+  initializeApp().catch(error => {
+    logger.error('Application initialization failed:', error);
+    process.exit(1);
+  });
+}
 
 export { app };

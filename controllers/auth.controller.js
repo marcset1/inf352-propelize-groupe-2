@@ -1,3 +1,4 @@
+//controller/auth.controller.js
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import logger from '../middleware/logger.js';
