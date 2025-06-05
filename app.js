@@ -3,12 +3,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import pinoHttp from 'pino-http';
 import cors from 'cors';
+
+// Import utilities
 import logger from './middleware/logger.js';
 import { connectDB } from './config/db.js';
 import { seedAll } from './data/seedData.js';
 import vehicleRoutes from './routes/vehicle.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+
 
 const app = express();
 
