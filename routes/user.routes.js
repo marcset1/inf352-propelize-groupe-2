@@ -1,3 +1,4 @@
+//routes/user.routes.js
 import { Router } from 'express';
 import { authenticate, authorize } from '../middleware/auth.middleware.js';
 import {

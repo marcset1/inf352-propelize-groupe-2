@@ -1,3 +1,4 @@
+//controller/user.controller.js
 import User from '../models/user.model.js';
 import logger from '../middleware/logger.js';
 import bcrypt from 'bcrypt';
