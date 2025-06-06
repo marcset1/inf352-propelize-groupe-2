@@ -11,10 +11,10 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 const sequelize = new Sequelize(
 
   process.env.NODE_ENV === 'test' 
-    ? process.env.TEST_DB_NAME || 'vehicle_db_test'
+    ? process.env.TEST_DB_NAME || 'test_vehicle_db'
     : process.env.DB_NAME || 'vehicle_db',
-  process.env.DB_USER || 'postgres',
-  process.env.DB_PASSWORD || 'jackkevin',
+  process.env.DB_USER || 'test_user',
+  process.env.DB_PASSWORD || 'test_password',
 
   {
     host: process.env.DB_HOST,

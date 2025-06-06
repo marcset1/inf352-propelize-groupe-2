@@ -22,11 +22,11 @@ const Vehicle = sequelize.define('Vehicle', {
   },
   annees: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   prixLocation: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   timestamps: true,

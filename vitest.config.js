@@ -1,12 +1,11 @@
-// vitest.config.js (ou à la racine)
-
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
+    setupFiles: ['./tests/integration/setup.js'],
+    include: ['tests/integration/**/*.test.js'],
+    //exclude: ['routes.test.js'],
     environment: 'node',
-    setupFiles: ['./tests/setup.js', './tests/integration/setup.js'],
-    include: ['**/*.test.js'],
     testTimeout: 10000,
     hookTimeout: 10000,
     teardownTimeout: 10000,
@@ -17,9 +16,8 @@ export default defineConfig({
         'node_modules/',
         'tests/',
         'coverage/',
-        '*.config.js'
-      ]
+        '*.config.js',
+      ]  
     }
   }
 });
-

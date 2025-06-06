@@ -4,7 +4,7 @@
  * @description Teste le fonctionnement des routes des vehicules depuis l'API des vehicules.
  */
 
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import {describe, it, expect, beforeAll, afterAll, afterEach, vi} from 'vitest';
 import { app } from '../../../../app.js';
 import request from 'supertest';
 import { generatePairwiseCombinations } from '../../../../utils/pairwiseGen.js';
