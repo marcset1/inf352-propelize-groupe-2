@@ -63,7 +63,7 @@ const Register = () => {
         <h2 className="text-3xl font-extrabold text-center text-teal-800">Register</h2>
 
         {message && (
-          <div className={`text-center text-base font-medium px-2 py-1 rounded transition-all duration-500 ${
+          <div data-testid="success-message" className={`text-center text-base font-medium px-2 py-1 rounded transition-all duration-500 ${
             isError ? 'text-red-600 bg-red-100 animate-bounce' : 'text-green-700 bg-green-100 animate-pulse'
           }`}>{message}</div>
         )}
@@ -97,9 +97,10 @@ const Register = () => {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+          <label  htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <div className="relative">
             <input
+              data-testid="password-input"
               type={showPassword ? 'text' : 'password'}
               name="password"
               id="password"
@@ -115,6 +116,7 @@ const Register = () => {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-3 text-gray-600 focus:outline-none"
+              data-testid='password-toggle'
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>

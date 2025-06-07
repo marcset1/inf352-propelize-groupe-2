@@ -77,12 +77,12 @@ const AdminVehicle = () => {
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Vehicle Management</h1>
-          <Link
+          <h1 data-testid="vehicle-management-header" className="text-3xl font-bold text-gray-800">Vehicle Management</h1>
+          <Link data-testid="add-vehicle-button"
             to={`/admin/vehicles/add`}
             className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700 transition-all duration-300"
           >
-            <PlusCircle className="w-5 h-5" /> Add Vehicle
+            <PlusCircle  className="w-5 h-5" /> Add Vehicle
           </Link>
         </div>
 
@@ -126,15 +126,16 @@ const AdminVehicle = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="text-green-600 font-medium text-center mb-4 animate-pulse"
+            data-testid="success-message"
           >
             {message}
           </motion.div>
         )}
 
         <div className="overflow-x-auto rounded-lg shadow">
-          <table className="min-w-full bg-white border">
+          <table data-testid="vehicles-table" className="min-w-full bg-white border">
             <thead>
-              <tr className="bg-gray-200 text-gray-700">
+              <tr data-testid="vehicles-row" className="bg-gray-200 text-gray-700">
                 <th className="py-3 px-6">Marque</th>
                 <th className="py-3 px-6">Model</th>
                 <th className="py-3 px-6">Immatriculation</th>
@@ -152,18 +153,20 @@ const AdminVehicle = () => {
                   <td className="py-3 px-6 text-center">{v.annees}</td>
                   <td className="py-3 px-6 text-center">{v.prixLocation}FCFA</td>
                   <td className="py-3 px-6 flex items-center justify-center gap-2">
-                    <Link to={`/admin/vehicles/edit?vehicleId=${v.id}`}
-                      
+                    <Link data-testid="edit-vehicle-link" to={`/admin/vehicles/edit?vehicleId=${v.id}`}
+                     
                       className="text-blue-600 hover:text-blue-800 transition"
                     >
                       <Pencil className="w-5 h-5" />
                     </Link>
-                    <button
-                      onClick={() => handleDelete(v.id)}
-                      className="text-red-600 hover:text-red-800 transition"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+<button
+  data-testid="delete-button"
+  onClick={() => handleDelete(v.id)}
+  className="text-red-600 hover:text-red-800 transition"
+  disabled={loading}
+>
+  {loading ? <Spinner /> : <Trash2 className="w-5 h-5" />}
+</button>
                   </td>
                 </tr>
               ))}

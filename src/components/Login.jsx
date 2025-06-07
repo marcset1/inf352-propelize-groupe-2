@@ -1,45 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import serverRoutes from '../routes/serverRoutes';
-import { setCredentials } from '../slices/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../slices/auth/usersApiSlice';
+import { setCredentials } from '../slices/auth/authSlice';
+
 const Login = () => {
   const [formData, setFormData] = useState({ name: '', password: '' });
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
-  const [login, {isLoading}] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     setIsError(false);
-    try {
-      console.log(formData);
-      const res = await login({name: formData.name, password: formData.password}).unwrap();
-      console.log(res);
-      //console.log(res);
-      dispatch(setCredentials({...res}));
-      setMessage('Login successful! Redirecting...');
-      setTimeout(() => navigate('/'), 2000);
-    } catch (err) {
-      if (err.response && err.response.status === 404) {
-        setMessage('User not registered. Redirecting to register...');
-        setIsError(true);
-        setTimeout(() => navigate('/register'), 3000);
-      } else {
-        setMessage('Invalid credentials');
-        setIsError(true);
-        setTimeout(() => setMessage(''), 3000);
-      }
-    }
+
+try {
+  const res = await login({ name: formData.name, password: formData.password }).unwrap();
+  dispatch(setCredentials({ ...res }));
+  setMessage('Login successful...'); // Make sure this matches test expectation
+  setTimeout(() => navigate('/'), 2000);
+} catch (err) {
+  if (err.response && err.response.status === 404) {
+    setMessage('Failed to login...'); // Make sure this matches test expectation
+    setIsError(true);
+    setTimeout(() => navigate('/register'), 3000);
+  } else {
+    setMessage(err.data?.message || 'Invalid credentials');
+    setIsError(true);
+  }
+}
   };
 
   return (
@@ -49,14 +45,16 @@ const Login = () => {
         className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-gray-200"
       >
         <h2 className="text-3xl font-extrabold text-center text-teal-800">Propelize</h2>
-        {message && (
-          <div className={`text-center text-lg ${isError ? 'text-red-600 animate-bounce' : 'text-green-600 animate-pulse'}`}>{message}</div>
-        )}
-
-        <div className='flex text-lg space-x-1'>
-          <p>Already have an account</p>
-          <Link className='font-bold ' to={`/register`}>Register</Link>
+        
+      {message && (
+        <div 
+          className={`text-center text-lg ${isError ? 'text-red-600 animate-bounce' : 'text-green-600 animate-pulse'}`}
+          data-testid="auth-message" // Add this
+        >
+          {message}
         </div>
+      )}
+
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
           <input
@@ -69,6 +67,7 @@ const Login = () => {
             className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+        
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <input
@@ -81,12 +80,27 @@ const Login = () => {
             className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-700 font-semibold transition"
-        >
-          Log In
-        </button>
+      <button
+        type="submit"
+        disabled={isLoading}
+        className={`w-full py-2 rounded-lg font-semibold transition ${
+          isLoading 
+            ? 'bg-gray-400 text-gray-100 cursor-not-allowed' 
+            : 'bg-gray-900 text-white hover:bg-gray-700'
+        }`}
+        data-testid="login-button"
+      >
+        {isLoading ? (
+          <span data-testid="loading-text">Logging in...</span>
+        ) : (
+          <span data-testid="login-text">Log In</span>
+        )}
+      </button>
+
+        <div className='flex text-lg space-x-1 justify-center'>
+          <p>Don't have an account?</p>
+          <Link className='font-bold text-blue-600 hover:underline' to="/register">Register</Link>
+        </div>
       </form>
     </div>
   );

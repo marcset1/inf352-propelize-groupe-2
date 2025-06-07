@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import {Routes, Route, HashRouter } from 'react-router-dom';
+import {Routes, Route, HashRouter, BrowserRouter } from 'react-router-dom';
 import Home from './components/Home';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Vehicle from './components/Admin/Vehicle';
@@ -16,7 +16,7 @@ import AdminAddVehicle from './components/Admin/AdminAddVehicle';
 import AdminEditVehicle from './components/Admin/AdminEditVehicle';
 const App = () => {
   return (
-    <HashRouter basename='/'>
+    <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow p-4">
@@ -24,7 +24,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
-            <Route path="/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/vehicles" element={<Vehicle />} />
             <Route path="/admin/users" element={<AdminUser/>} />
             <Route path="/admin/users/add" element={<AdminAddUser />} />
@@ -36,7 +36,7 @@ const App = () => {
         </main>
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

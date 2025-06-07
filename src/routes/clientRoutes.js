@@ -1,4 +1,4 @@
-
+const BASE_URL = "http://localhost:3000"
 const clientRoutes = {
   HOME: '/',
   DASHBOARD: '/dashboard',
@@ -8,5 +8,5 @@ const clientRoutes = {
   DELETE_USER: '/users/delete',
   LOGIN: '/login'
 };
-
+export {BASE_URL};
 export default clientRoutes;
