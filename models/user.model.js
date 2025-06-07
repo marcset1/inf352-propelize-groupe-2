@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../config/db.js';
 import bcrypt from 'bcrypt';
 
@@ -24,7 +24,17 @@ const User = sequelize.define('User', {
   },
   refreshToken: {
     type: DataTypes.STRING,
+    allowNull: true,
   },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.fn('NOW')
+  },
+  updatedAt: {
+    type: DataTypes.STRING,
+    defaultValue: sequelize.fn('NOW'),
+    onUpdate: sequelize.fn('NOW')
+  }
 }, {
   hooks: {
     beforeSave: async (user) => {
@@ -33,7 +43,6 @@ const User = sequelize.define('User', {
       }
     },
   },
-  timestamps: true,
 });
 
 // Méthode pour comparer les mots de passe

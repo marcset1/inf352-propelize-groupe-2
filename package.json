@@ -9,7 +9,9 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "test:coverage:open": "vitest run --coverage && open coverage/index.html"
+    "test:coverage:open": "vitest run --coverage && open coverage/index.html",
+    "start": "node index.js",
+    "dev": "vite"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +24,13 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.511.0",
     "nodemon": "^3.1.9",
+    "pg": "^8.16.0",
     "pino": "^9.6.0",
     "pino-http": "^10.4.0",
     "pino-pretty": "^13.0.0",
+    "sequelize": "^6.37.7",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

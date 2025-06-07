@@ -16,7 +16,6 @@ import vehicleRoutes from './routes/vehicle.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 
-
 dotenv.config();
 
 const app = express();
@@ -26,7 +25,7 @@ const initializeApp = async () => {
   try {
     // Connect to database first
     await connectDB();
-    
+   
     // Then seed the database with initial data (users and vehicles)
     await seedAll(); // Modification ici pour seed users et vehicles
     
@@ -40,12 +39,29 @@ const initializeApp = async () => {
 // Middlewares
 app.use(pinoHttp({ logger }));
 app.use(bodyParser.json());
-app.use(cors());
+
+var allowedOrigins = [ 'http://localhost:3000','https://propelize.onrender.com']
+let corsOptions = {
+    credentials: true,
+    origin: function(origin, callback) {
+        if(allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        }else {
+            callback(new Error('Not allowed by cors'));
+        }
+    },
+    methods: ["GET, POST, PUT, DELETE"],
+  }
+
+
+app.use(
+  cors( corsOptions
+))
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
-app.use('/vehicles', vehicleRoutes); 
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/vehicles', vehicleRoutes); 
 
 // Health check route
 app.get('/', (req, res) => {

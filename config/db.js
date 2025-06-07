@@ -1,10 +1,11 @@
 import { Sequelize } from 'sequelize';
 import logger from '../middleware/logger.js';
 
+
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 'vehicle_db',
+  process.env.DB_NAME || 'propelize',
   process.env.DB_USER || 'postgres',
-  process.env.DB_PASSWORD || 'jackkevin',
+  process.env.DB_PASSWORD || 'postgres',
   {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 5432,
@@ -15,6 +16,7 @@ const sequelize = new Sequelize(
 
 export const connectDB = async () => {
   try {
+    console.log("DB HOST", process.env.DB_HOST)
     await sequelize.authenticate();
     await sequelize.sync(); // Creates tables if they don't exist
     logger.info('PostgreSQL Connected');

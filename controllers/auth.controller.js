@@ -44,7 +44,6 @@ export const register = async (req, res) => {
     logger.info(`User registered: ${name}`);
     return res.status(201).json({
       accessToken,
-      refreshToken,
       user: {
         id: user.id,
         name: user.name,
@@ -85,7 +84,6 @@ export const login = async (req, res) => {
     logger.info(`User logged in: ${name}`);
     return res.json({
       accessToken,
-      refreshToken,
       user: {
         id: user.id,
         name: user.name,
