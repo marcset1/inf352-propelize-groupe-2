@@ -25,4 +25,4 @@ jobs:
       run: npm ci
 
     - name: Run Backend Tests
-      run: npm test:unit
+      run: npm run test:unit
