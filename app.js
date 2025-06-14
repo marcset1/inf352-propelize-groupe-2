@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import pinoHttp from 'pino-http';
 import cors from 'cors';
+
+// Import utilities
 import logger from './middleware/logger.js';
 import { connectDB } from './config/db.js';
 import { seedAll } from './data/seedData.js';
