@@ -889,12 +889,14 @@ async function fetchUsers() {
         <td>${user.role}</td>
         <td>${new Date(user.createdAt).toLocaleDateString()}</td>
         <td>
-          <button class="table-btn" onclick="editUser('${user.id}')">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="table-btn danger" onclick="deleteUser('${user.id}')">
-            <i class="fas fa-trash"></i>
-          </button>
+          <div class="action-buttons">
+            <button class="table-btn" onclick="editUser('${user.id}')">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="table-btn danger" onclick="deleteUser('${user.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </td>
       `;
       userList.appendChild(row);

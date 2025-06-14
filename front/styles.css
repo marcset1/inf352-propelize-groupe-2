@@ -462,9 +462,16 @@
       font-size: 1.2rem;
     }
   
+    .nav-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
     .nav-btn {
       padding: 6px 12px;
       font-size: 0.8rem;
+      width: 100%;
+      margin-bottom: 10px;
     }
   
     .options-grid {
@@ -473,7 +480,7 @@
     }
   
     .operations-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: 15px;
     }
   
@@ -495,10 +502,6 @@
   @media (max-width: 480px) {
     .card-title {
       font-size: 1.7rem;
-    }
-  
-    .operations-grid {
-      grid-template-columns: 1fr;
     }
   
     .option-card {
@@ -595,15 +598,15 @@
   }
 
   .user-avatar {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: #eef2ff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
-    font-size: 40px;
+    font-size: 50px;
     color: #667eea;
     animation: rotateAvatar 10s linear infinite;
   }
@@ -650,3 +653,113 @@
   .reserve-btn:hover {
     background-color: #218838;
   }
+
+  /* Center Auth Page */
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #auth-page.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Styles pour la colonne Actions et les boutons */
+  .data-table th:last-child,
+  .data-table td:last-child {
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+  }
+  
+  
+  /* Amélioration du conteneur de tableau */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto; /* Défilement horizontal */
+  overflow-y: auto; /* Défilement vertical si nécessaire */
+  max-height: 500px; /* Hauteur maximale pour activer le défilement vertical */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+/* Ajustement du tableau */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Assure que le tableau a une largeur minimale pour éviter la compression excessive */
+}
+
+/* Réduction de la taille des colonnes */
+.data-table th,
+.data-table td {
+  padding: 12px 10px; /* Réduction du padding pour économiser de l'espace */
+  text-align: left;
+  font-size: 0.9rem; /* Taille de police légèrement plus petite */
+  white-space: nowrap; /* Empêche le retour à la ligne dans les cellules */
+}
+
+/* Style pour la colonne Actions */
+.data-table th:last-child,
+.data-table td:last-child {
+  min-width: 100px; /* Réduction de la largeur minimale pour la colonne Actions */
+  text-align: center;
+}
+
+/* Amélioration des boutons dans le tableau */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si nécessaire */
+}
+
+/* Ajustements pour les petits écrans */
+@media (max-width: 768px) {
+  .data-table {
+    font-size: 0.8rem; /* Réduction supplémentaire de la taille de la police */
+    min-width: 500px; /* Ajustement de la largeur minimale */
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px 6px; /* Réduction du padding */
+  }
+
+  .table-btn {
+    padding: 6px 10px; /* Boutons plus petits */
+    font-size: 0.75rem;
+    min-width: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-table {
+    font-size: 0.7rem; /* Taille encore plus petite pour les très petits écrans */
+    min-width: 400px; /* Réduction supplémentaire de la largeur minimale */
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 6px 4px;
+  }
+
+  .table-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    min-width: 45px;
+  }
+}
+  
