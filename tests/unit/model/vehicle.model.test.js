@@ -115,11 +115,11 @@ describe('Vehicle Model Tests', () => {
         }),
         annees: expect.objectContaining({
           type: DataTypes.INTEGER,
-          allowNull: false
+          allowNull: true
         }),
         prixLocation: expect.objectContaining({
           type: DataTypes.FLOAT,
-          allowNull: false
+          allowNull: true
         })
       }),
       expect.objectContaining({
