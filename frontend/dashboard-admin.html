@@ -471,18 +471,18 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <div class="logo">
-        <i class="fas fa-car"></i>
-        <span>Propelize</span>
-      </div>
-      <div class="user-info">
-        <div class="user-avatar">A</div>
-        <button class="logout-btn" onclick="logout()">
-          <i class="fas fa-sign-out-alt"></i> Déconnexion
-        </button>
-      </div>
-    </header>
+	<header>
+	  <div class="logo">
+		<i class="fas fa-car"></i>
+		<span>Propelize</span>
+	  </div>
+	  <div class="user-info">
+		<div class="user-avatar" id="userAvatar">A</div> <!-- Le script remplira cette valeur -->
+		<button class="logout-btn" onclick="logout()">
+		  <i class="fas fa-sign-out-alt"></i> Déconnexion
+		</button>
+	  </div>
+	</header>
     
     <div class="dashboard-content">
       <h1>Tableau de bord Administrateur</h1>
@@ -659,8 +659,47 @@
   <script>
     // Configuration de l'API pour votre backend Express
     const API_BASE_URL = 'http://localhost:3001'; // Port de votre serveur Express
-    const API_USERS = `${API_BASE_URL}/api/users`;
-    const API_VEHICLES = `${API_BASE_URL}/api/vehicles`;
+    const API_USERS = `${API_BASE_URL}/users`;
+    const API_VEHICLES = `${API_BASE_URL}/vehicles`;
+
+
+	
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      console.log("utilisateur courant - admin: ", currentUser);
+      // Afficher l'initiale de l'utilisateur
+      if (currentUser && currentUser.username) {
+        document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+      }
+      
+      // Charger les données
+      loadUsers();
+      loadVehicles();
+      
+      // Gestion des onglets
+      document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+          
+          button.classList.add('active');
+          const tabId = button.getAttribute('data-tab');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+    });
+
+    // Fonction de déconnexion
+    function logout() {
+      if (confirm("Êtes-vous sûr de vouloir vous déconnecter?")) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      }
+    }
+
+
 
     // Fonction pour afficher une notification
     function showNotification(message, isSuccess = true) {
@@ -685,7 +724,14 @@
     // Fonction pour charger les utilisateurs depuis PostgreSQL
     async function loadUsers() {
       try {
-        const response = await fetch(API_USERS);
+        const response = await fetch(API_USERS, {
+		  method: "GET",
+		  credentials: "include",
+		  headers: {
+		  	"Authorization": `Bearer ${localStorage.authToken}`,
+		  	"Content-Type": "application/json"
+		  }
+		});
         if (!response.ok) throw new Error('Erreur lors du chargement des utilisateurs');
         const users = await response.json();
         
@@ -977,24 +1023,12 @@
       }
     });
     
-    // Fonction de déconnexion
-    function logout() {
-      if (confirm("Êtes-vous sûr de vouloir vous déconnecter?")) {
-        window.location.href = 'login.html';
-      }
-    }
     
     // Fermer les modals en cliquant en dehors
     window.addEventListener('click', function(e) {
       if (e.target.classList.contains('modal')) {
         e.target.classList.remove('active');
       }
-    });
-    
-    // Charger les données au démarrage
-    document.addEventListener('DOMContentLoaded', function() {
-      loadUsers();
-      loadVehicles();
     });
   </script>
 </body>

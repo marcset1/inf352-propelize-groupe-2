@@ -820,9 +820,9 @@
   <script>
     // Configuration de l'API pour votre backend Express
     const API_BASE_URL = 'http://localhost:3001';
-    const API_AUTH = `${API_BASE_URL}/api/auth`;
-    const API_VEHICLES = `${API_BASE_URL}/api/vehicles`;
-    const API_USERS = `${API_BASE_URL}/api/users`;
+    const API_AUTH = `${API_BASE_URL}/auth`;
+    const API_VEHICLES = `${API_BASE_URL}/vehicles`;
+    const API_USERS = `${API_BASE_URL}/users`;
     const API_RENTALS = `${API_BASE_URL}/api/rentals`;
     
     // Éléments DOM
@@ -872,7 +872,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            username: username,
+            name: username,
             password: password
           })
         });
