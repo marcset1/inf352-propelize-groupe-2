@@ -114,7 +114,7 @@ export const updateUser = async (req, res) => {
     // Prepare update data
     const updateData = {};
     if (name) updateData.name = name;
-    if (password) updateData.password = password;
+    if (password) updateData.password = await bcrypt.hash(password, 10);
     if (role && req.user.role === 'admin') updateData.role = role;
 
     // Only proceed if there are changes

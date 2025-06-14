@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propelize</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-overlay"></div>
+  
+  <!-- Navigation Header -->
+  <div id="nav-header" class="nav-header hidden">
+    <div class="nav-title">Propelize</div>
+    <div class="nav-controls">
+      <button id="back-btn" class="nav-btn back" onclick="goBack()">
+        ← Back
+      </button>
+      <span id="username-display" class="welcome-text"></span>
+      <button id="logout-btn" class="nav-btn logout" onclick="logout()">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-content">
+      
+      <!-- Authentication Page -->
+      <div id="auth-page" class="page active">
+        <div class="card">
+          <h1 class="card-title">Propelize</h1>
+          <div id="message-container"></div>
+          
+          <!-- Login Form -->
+          <div id="login-form">
+            <h2 class="card-subtitle">Welcome Back</h2>
+            <div class="form-group">
+              <label class="form-label" for="login-name">Username</label>
+              <input type="text" id="login-name" class="form-input" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="login-password">Password</label>
+              <input type="password" id="login-password" class="form-input" placeholder="Enter your password">
+            </div>
+            <button class="btn" onclick="login()">Sign In</button>
+            <p style="text-align: center; margin-top: 20px; color: #666;">
+              Don't have an account? 
+              <a href="#" onclick="showRegister()" style="color: #667eea; text-decoration: none; font-weight: 600;">Create Account</a>
+            </p>
+          </div>
+          
+          <!-- Register Form -->
+          <div id="register-form" style="display: none;">
+            <h2 class="card-subtitle">Create Account</h2>
+            <div class="form-group">
+              <label class="form-label" for="register-name">Username</label>
+              <input type="text" id="register-name" class="form-input" placeholder="Choose a username">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="register-password">Password</label>
+              <input type="password" id="register-password" class="form-input" placeholder="Create a password">
+            </div>
+            <button class="btn" onclick="register()">Create Account</button>
+            <p style="text-align: center; margin-top: 20px; color: #666;">
+              Already have an account? 
+              <a href="#" onclick="showLogin()" style="color: #667eea; text-decoration: none; font-weight: 600;">Sign In</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Page -->
+      <div id="dashboard-page" class="page">
+        <div class="card">
+          <h1 class="card-title">Dashboard</h1>
+          <div class="welcome-text" style="text-align: center; font-size: 1.1rem; margin-bottom: 30px;">
+            Choose a management option
+          </div>
+          
+          <div class="options-grid">
+            <div class="option-card" onclick="showVehicleOptions()">
+              <div class="option-icon">🚗</div>
+              <div class="option-title">Vehicle Management</div>
+              <div class="option-description">
+                Manage your vehicle fleet, add new vehicles, update information, and track availability
+              </div>
+            </div>
+            
+            <div class="option-card" onclick="showUserOptions()">
+              <div class="option-icon">👥</div>
+              <div class="option-title">User Management</div>
+              <div class="option-description">
+                Manage user accounts, permissions, and access control (Admin only)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle Options Page -->
+      <div id="vehicle-options-page" class="page">
+        <div class="card">
+          <h2 class="card-subtitle">Vehicle Management</h2>
+          <div class="operations-grid">
+            <div class="operation-btn" onclick="showVehicleOperation('create')">
+              ➕ Add Vehicle
+            </div>
+            <div class="operation-btn" onclick="showVehicleOperation('list')">
+              📋 View All
+            </div>
+            <div class="operation-btn" onclick="showVehicleOperation('search')">
+              🔍 Search
+            </div>
+            <div class="operation-btn" onclick="showVehicleOperation('filter')">
+              🏷️ Filter by Price
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Options Page -->
+      <div id="user-options-page" class="page">
+        <div class="card">
+          <h2 class="card-subtitle">User Management</h2>
+          <div class="operations-grid">
+            <div class="operation-btn" onclick="showUserOperation('create')">
+              ➕ Add User
+            </div>
+            <div class="operation-btn" onclick="showUserOperation('list')">
+              📋 View All Users
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle Operations Page -->
+      <div id="vehicle-operations-page" class="page">
+        <div class="card">
+          <div id="vehicle-content">
+            <!-- Dynamic content will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- User Operations Page -->
+      <div id="user-operations-page" class="page">
+        <div class="card">
+          <div id="user-content">
+            <!-- Dynamic content will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

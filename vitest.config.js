@@ -8,14 +8,30 @@ export default defineConfig({
     hookTimeout: 10000,
     teardownTimeout: 10000,
     globals: true,
+    exclude: [
+      'front/**', 
+      'node_modules/**',
+      'dist/**',
+    ],
     coverage: {
       reporter: ['text', 'json', 'html'],
       exclude: [
-        'node_modules/',
-        'tests/',
-        'coverage/',
-        '*.config.js'
-      ]
-    }
-  }
+        'front/**', // Exclude front/ from coverage
+        'node_modules/**',
+        'dist/**',
+        'coverage/**',
+        'front/**',
+        'app.js',
+        'index.js',
+        'setupTests.js',
+        'utils/**',
+        'pairwiseGen.js',
+        'vehicle-user-frontend/**',
+        'setupTest/**',
+        'vitest.config.js',
+        '**/logger.js',
+        '**/*.config.js',
+      ],
+    },
+  },
 });
