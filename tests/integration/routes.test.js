@@ -14,7 +14,7 @@ const request = supertest(app);
 describe('Integration Tests for API Routes', () => {
   let adminToken, userToken, adminUser, regularUser;
 
-  beforeAll(async () => {
+  /*beforeAll(async () => {
     // Initialize test database
     process.env.NODE_ENV = 'test';
     await initializeApp();
@@ -23,11 +23,13 @@ describe('Integration Tests for API Routes', () => {
   afterAll(async () => {
     // Close database connection
     await sequelize.close();
-  });
+  });*/
 
   beforeEach(async () => {
     // Reset database before each test
-    await sequelize.sync({ force: true });
+    //await sequelize.sync({ force: true });
+    await User.destroy({ truncate: true, cascade: true });
+    await Vehicle.destroy({ truncate: true, cascade: true });
 
     // Create test users
     adminUser = await User.create({

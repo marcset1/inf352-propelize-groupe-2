@@ -6,8 +6,14 @@
   "scripts": {
     "start": "nodemon index.js",
     "test:verify": "node -e \"import('./config/db.js').then(m => console.log('Sequelize:', m.default ? 'OK' : 'UNDEFINED'))\"",
-    "test": "docker-compose -f docker-compose.test.yml up -d && vitest run",
-    "test:watch": "docker-compose -f docker-compose.test.yml up -d && vitest watch",
+    
+    "test:unit": "vitest run --coverage -c vitest.unit.config.js",
+    "test:unit:watch": "vitest watch --coverage -c vitest.unit.config.js",
+    
+    "test:integration": "docker-compose -f docker-compose.test.yml up -d && vitest run",
+    "test:integration:watch": "docker-compose -f docker-compose.test.yml up -d && vitest watch",
+    
+    
     "test:teardown": "docker-compose -f docker-compose.test.yml down",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",

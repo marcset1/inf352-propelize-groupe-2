@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test_password
-      POSTGRES_DB: test_vehicle_db  # Nom explicite
+      POSTGRES_DB: test_vehicle_db  
     ports:
       - "5433:5432"  # Port différent de la prod (5432)
     healthcheck:
