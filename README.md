@@ -204,7 +204,7 @@ Sur Le port 8080
 ## dans la ligne 27 du fichier de test `front/propelize.spec.js` 
 [] ajouter l'url complete obtenu pour servir le front avec l'une des commandes(section precedente)
 ![modifier le domaine (zone en surbrillance orange)](frontConf.png)
-##lance le test
+## lance le test
 ```
 npx playwright test
 ```
@@ -213,7 +213,7 @@ npx playwright test
 # 7. Ou plutot pour le Backend
 [] Test unitaire avec vitest
 
-	[] ```npm run test:unit```
+ []```npm run test:unit```
 
 	![resulat:] affiche la couverture par niveau et en pourcentage puis cree ou modifie le dossier ```coverage/``` a la racine
 [] Test integration avec vitest + supertest
@@ -222,8 +222,7 @@ npx playwright test
 
 	![resultat:] affiche la proportion de fichiers et de tests executes
 [] Tu n'es pas du genre a te casser la tete::tu prends tout une fois
-
-	[] ``` npm run test ```
+``` npm run test ```
 
 	![resultat](testAll.png)
 
