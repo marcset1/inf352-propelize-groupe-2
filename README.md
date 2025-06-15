@@ -162,7 +162,9 @@ Changer les informations de connexion a postgres via bd.js qui se trouve dans le
 npm install
 ```
 [] si erreur
+
 	[] supprimer ```package-lock.json, node_modules``` 
+
 	[] reinstaller les dependances.. ```npm install```
 
 
@@ -184,14 +186,21 @@ cd front/
 npx playwright install
 ```
 ## Il est vraiment preferable de servir les fichiers du front pour faciliter le test
+[] utiliser `http-server`
+```http-server```
+
 [] utiliser `serve` via le gestionnaire de paquet `snap`
 ```
 serve . -p <votre-port-libre-ici>
 ```
+
 [] utiliser python
 ```
 python -m http-server <votre-port-libre-ici>
 ```
+
+Sur Le port 8080
+
 ## dans la ligne 27 du fichier de test `front/propelize.spec.js` 
 [] ajouter l'url complete obtenu pour servir le front avec l'une des commandes(section precedente)
 ![modifier le domaine (zone en surbrillance orange)](frontConf.png)
@@ -203,13 +212,19 @@ npx playwright test
 
 # 7. Ou plutot pour le Backend
 [] Test unitaire avec vitest
+
 	[] ```npm run test:unit```
+
 	![resulat:] affiche la couverture par niveau et en pourcentage puis cree ou modifie le dossier ```coverage/``` a la racine
 [] Test integration avec vitest + supertest
+
 	[] ```npm run test:integration```
+
 	![resultat:] affiche la proportion de fichiers et de tests executes
 [] Tu n'es pas du genre a te casser la tete::tu prends tout une fois
+
 	[] ``` npm run test ```
+
 	![resultat](testAll.png)
 
 #SI VOUS ETES SUR WINDOWS
