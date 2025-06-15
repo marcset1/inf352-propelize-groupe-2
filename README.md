@@ -146,7 +146,7 @@ Changer les informations de connexion a postgres via bd.js qui se trouve dans le
 1. .env pour preciser les informations de production dans votre sgbd
 2. db.js -> preciser le nom de la bd de test (test_vehicle_db) dans votre sgbd
 ```
-![donnees de connexion au SGBD POSTGRESQL](dbconf.png)
+![donnees de connexion au SGBD POSTGRESQL](dbConf.png)
 
 
  modifier également les informations du fichier ```.env.test``` en fonction des votres  pour la persistance des donnees de test
@@ -217,12 +217,15 @@ npx playwright test
 
 	![resulat:] affiche la couverture par niveau et en pourcentage puis cree ou modifie le dossier ```coverage/``` a la racine
 [] Test integration avec vitest + supertest
-
-	[] ```npm run test:integration```
+``` 
+npm run test:integration
+```
 
 	![resultat:] affiche la proportion de fichiers et de tests executes
 [] Tu n'es pas du genre a te casser la tete::tu prends tout une fois
-``` npm run test ```
+``` 
+npm run test 
+```
 
 	![resultat](testAll.png)
 
