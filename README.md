@@ -229,7 +229,7 @@ npm run test
 
 ![resultat](testAll.png)
 
-#SI VOUS ETES SUR WINDOWS
+# SI VOUS ETES SUR WINDOWS
 
 ## ⚙️ Installation et démarrage
 
