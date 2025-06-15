@@ -1,0 +1,64 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # Définition des services requis pour ce job
+    services:
+      # Nom du service PostgreSQL. Ce nom sera utilisé comme hostname
+      # par notre application pour se connecter à la base de données.
+      postgres:
+        image: postgres:13 # Vous pouvez spécifier une version spécifique de PostgreSQL ici
+        env:
+          POSTGRES_DB: test_vehicle_db # Nom de la base de données de test
+          POSTGRES_USER: test_user # Nom d'utilisateur pour la base de données
+          POSTGRES_PASSWORD: test_user_123 # Mot de passe pour la base de données
+        ports:
+          # Mapper le port 5432 du conteneur PostgreSQL au port 5432 de l'hôte du runner.
+          # Notre application se connectera à '127.0.0.1:5432'
+          - 5432:5432
+        # Ceci est une commande de santé pour s'assurer que PostgreSQL est prêt.
+        # GitHub Actions attendra que ce statut soit sain avant de démarrer les étapes.
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18' # Ajustez la version de Node.js si nécessaire
+
+    - name: Install Backend Dependencies
+      run: npm ci
+
+    - name: Run Backend Unit Tests
+      run: npm test:unit
+
+    # Les tests d'intégration s'exécuteront après que le service PostgreSQL soit démarré et sain.
+    - name: Run Backend Integration Tests
+      run: npm test:integration
+      env:
+        # Ces variables d'environnement sont passées à notre commande de test.
+        # Notre application Node.js devra lire ces variables pour se connecter à la DB.
+        # L'hôte est '127.0.0.1' car le port 5432 du conteneur est mappé sur l'hôte du runner.
+        DATABASE_HOST: 127.0.0.1
+        DATABASE_PORT: 5432
+        DATABASE_USER: ${{ services.postgres.env.POSTGRES_USER }}
+        DATABASE_PASSWORD: ${{ services.postgres.env.POSTGRES_PASSWORD }}
+        DATABASE_NAME: ${{ services.postgres.env.POSTGRES_DB }}
+
