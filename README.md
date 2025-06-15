@@ -227,7 +227,7 @@ npm run test:integration
 npm run test 
 ```
 
-	![resultat](testAll.png)
+![resultat](testAll.png)
 
 #SI VOUS ETES SUR WINDOWS
 
